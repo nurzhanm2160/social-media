@@ -1,4 +1,4 @@
-const Technologies = () => {
+export const Technologies = () => {
     return (
       <div className="App">
         <ul>
