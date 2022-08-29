@@ -1,62 +1,26 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
+import LinkWithIcon from '../LinkWithIcon/LinkWithIcon'
 
 import style from './Navbar.module.css'
+
+import {CgProfile} from 'react-icons/cg'
+import {SiGooglemessages} from 'react-icons/si'
+import {ImNewspaper} from 'react-icons/im'
+import {BsMusicPlayerFill} from 'react-icons/bs'
+import {FiSettings} from 'react-icons/fi'
 
 const Navbar = () => {
   return (
     <nav className={style.nav}>
-        <div>
-          <NavLink 
-            to="/profile" 
-            className={({isActive}) => (
-              isActive ? style.activeLink : null
-            )}
-          >
-            Profile
-            </NavLink>
-        </div>
-        <div>
-         <NavLink 
-           to="/dialogs"
-           className={({isActive}) => (
-            isActive ? style.activeLink : null
-          )}
-         >
-            Messages
-          </NavLink>
-        </div>
-        <div>
-        <NavLink 
-          to="/news"
-          className={({isActive}) => (
-            isActive ? style.activeLink : null
-          )}
-        >
-          News
-        </NavLink>
-        </div>
-        <div>
-        <NavLink 
-          to="/music"
-          className={({isActive}) => (
-            isActive ? style.activeLink : null
-          )}
-        >
-          Music
-        </NavLink>
-        </div>
-        <div>
-        <NavLink 
-          to="/settings"
-          className={({isActive}) => (
-            isActive ? style.activeLink : null
-          )}
-        >
-          Settings
-        </NavLink>
-        </div>
-      </nav>
+      <div className={style.items}>
+        <LinkWithIcon path="/profile" title="Profile" Icon={CgProfile} style={style.activeLink} />
+        <LinkWithIcon path="/dialogs" title="Dialogs" Icon={SiGooglemessages} style={style.activeLink} />
+        <LinkWithIcon path="/news" title="News" Icon={ImNewspaper} style={style.activeLink} />
+        <LinkWithIcon path="/music" title="Music" Icon={BsMusicPlayerFill} style={style.activeLink} />
+        <LinkWithIcon path="/settings" title="Settings" Icon={FiSettings} style={style.activeLink} />
+      </div>
+    </nav>
   )
 }
 
