@@ -13,9 +13,9 @@ const MyPosts = () => {
             <button>Remove</button>
         </div>
         <div className={style.posts}>
-            <Post />
-            <Post />
-            <Post />
+            <Post name="nurik2160" message="post 1"/>
+            <Post name="dauren" message="post 2"/>
+            <Post name="narkoz520" message="post3 " />
         </div>
     </div>
   )
