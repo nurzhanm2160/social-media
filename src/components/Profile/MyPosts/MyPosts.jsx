@@ -4,6 +4,17 @@ import style from './MyPosts.module.css'
 import Post from './Post/Post'
 
 const MyPosts = () => {
+
+  const postItems = [
+    {name: "nurik2160", message: "post 1"},
+    {name: "dauren", message: "post 2"},
+    {name: "narkoz520", message: "post 3"},
+  ]
+
+  const posts = posts.map((item, index) => {
+    return <Post name={item.name} message={item.message} key={index} />
+  })
+
   return (
     <div>
         My posts
@@ -17,9 +28,7 @@ const MyPosts = () => {
           </div>
         </div>
         <div className={style.posts}>
-            <Post name="nurik2160" message="post 1"/>
-            <Post name="dauren" message="post 2"/>
-            <Post name="narkoz520" message="post3 " />
+          {posts}
         </div>
     </div>
   )
