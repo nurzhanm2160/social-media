@@ -1,0 +1,17 @@
+.dialogsWrapper {
+    display: grid;
+    grid-template-areas: "dialogs dialog";
+    grid-template-columns: 100px 1fr;
+    grid-template-rows: 1fr;
+    grid-gap: 10px;
+}
+
+.dialogs {
+    grid-area: dialogs;
+    background-color: aqua;
+}
+
+.dialog {
+    grid-area: dialog;
+    background-color: aquamarine;
+}
