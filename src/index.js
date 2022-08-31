@@ -10,36 +10,20 @@ import Post from './components/Profile/MyPosts/Post/Post'
 import Dialog from './components/Dialogs/Dialog/Dialog'
 import Message from './components/Dialogs/Message/Message';
 
-const postItems = [
-  {name: "nurik2160", message: "post 1"},
-  {name: "dauren", message: "post 2"},
-  {name: "narkoz520", message: "post 3"},
-]
+import { state, addPost } from './redux/state'
 
-const posts = postItems.map((item, index) => {
+
+
+const posts = state.posts.map((item, index) => {
   return <Post name={item.name} message={item.message} key={index} />
 })
 
 
-const dialogItems = [
-  {id: 1, name: "Даурен"},
-  {id: 2, name: "Нуркен"},
-  {id: 3, name: "Кусайын"},
-  {id: 4, name: "Быржан"},
-]
-
-const messageItems = [
-  {message: "Салам"},
-  {message: "Как дела?"},
-  {message: "Что делаешь?"},
-  {message: "Как ты?"},
-]
-
-const dialogs = dialogItems.map((item, index) => {
+const dialogs = state.dialogs.map((item, index) => {
   return <Dialog id={item.id} name={item.name} key={index} />
 })
 
-const messages = messageItems.map((item, index) => {
+const messages = state.messages.map((item, index) => {
   return <Message message={item.message} key={index} />
 })
 
@@ -47,7 +31,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <App posts={posts} dialogs={dialogs} messages={messages}/>
+      <App posts={posts} dialogs={dialogs} messages={messages} addPost={addPost} />
     </BrowserRouter>
   </React.StrictMode>
 );
