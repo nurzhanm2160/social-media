@@ -1,17 +1,22 @@
 import React from 'react'
-import { useRef } from 'react'
+import { useRef, useState} from 'react'
 
 import style from './MyPosts.module.css'
 
 const MyPosts = ({posts, addPost}) => {
   
+  const [text, setText] = useState('')
 
   const textareaRef = useRef(null)
 
+  const onPostChange = () => {
+    setText(textareaRef.current.value)
+  } 
+
   const onAddPost = () => {
     const text = textareaRef.current.value
-    console.log(text)
     addPost(text)
+    setText('')
   }
 
   return (
@@ -19,7 +24,7 @@ const MyPosts = ({posts, addPost}) => {
         My posts
         <div>
           <div>
-            <textarea ref={textareaRef}></textarea>
+            <textarea onChange={onPostChange} value={text} ref={textareaRef}></textarea>
           </div>  
           <div>
             <button onClick={() => onAddPost() }>Add post</button>

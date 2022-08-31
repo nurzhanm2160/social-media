@@ -1,4 +1,8 @@
 
+let rerenderEntireTree = () => {
+    console.log('render')
+}
+
 export let state = {
     posts: [
         {name: "nurik2160", message: "post 1"},
@@ -22,9 +26,13 @@ export let state = {
 
 export const addPost = (postText) => {
     const text = {
-        id: state.posts.length++,
         name: "nurik2160",
         message: postText
     }
     state.posts.push(text)
+    rerenderEntireTree(state)
+}
+
+export const subscribe = (observer) => {
+    rerenderEntireTree = observer;
 }
