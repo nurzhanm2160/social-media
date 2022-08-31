@@ -10,10 +10,10 @@ import Post from './components/Profile/MyPosts/Post/Post'
 import Dialog from './components/Dialogs/Dialog/Dialog'
 import Message from './components/Dialogs/Message/Message';
 
-import { state, addPost, subscribe } from './redux/state'
+import { store } from './redux/state'
 
 
-
+const state = store.getState()
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -35,7 +35,7 @@ const rerenderEntireTree = (state) => {
   root.render(
     <React.StrictMode>
       <BrowserRouter>
-        <App posts={posts} dialogs={dialogs} messages={messages} addPost={addPost} />
+        <App posts={posts} dialogs={dialogs} messages={messages} addPost={store.addPost.bind(store)} />
       </BrowserRouter>
     </React.StrictMode>
   );
@@ -44,7 +44,7 @@ const rerenderEntireTree = (state) => {
 
 rerenderEntireTree(state)
 
-subscribe(rerenderEntireTree)
+store.subscribe(rerenderEntireTree)
 
 
 // If you want to start measuring performance in your app, pass a function
