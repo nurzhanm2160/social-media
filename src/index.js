@@ -35,7 +35,7 @@ const rerenderEntireTree = (state) => {
   root.render(
     <React.StrictMode>
       <BrowserRouter>
-        <App posts={posts} dialogs={dialogs} messages={messages} addPost={store.addPost.bind(store)} />
+        <App posts={posts} dialogs={dialogs} messages={messages} dispatch={store.dispatch.bind(store)} />
       </BrowserRouter>
     </React.StrictMode>
   );

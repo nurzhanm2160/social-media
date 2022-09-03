@@ -4,12 +4,12 @@ import MyPosts from './MyPosts/MyPosts'
 import style from './Profile.module.css'
 import ProfileInfo from './ProfileInfo/ProfileInfo'
 
-const Profile = ({posts, addPost}) => {
+const Profile = ({posts, dispatch}) => {
   return (
     <>
         Main content
         <ProfileInfo />
-        <MyPosts posts={posts} addPost={addPost} />
+        <MyPosts posts={posts} dispatch={dispatch} />
     </>
   )
 }

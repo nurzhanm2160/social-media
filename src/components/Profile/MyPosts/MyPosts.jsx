@@ -1,41 +1,44 @@
 import React from 'react'
-import { useRef, useState} from 'react'
+import {useRef, useState} from 'react'
 
 import style from './MyPosts.module.css'
 
-const MyPosts = ({posts, addPost}) => {
-  
-  const [text, setText] = useState('')
+const MyPosts = ({posts, dispatch}) => {
 
-  const textareaRef = useRef(null)
+    const [text, setText] = useState('')
 
-  const onPostChange = () => {
-    setText(textareaRef.current.value)
-  } 
+    const textareaRef = useRef(null)
 
-  const onAddPost = () => {
-    const text = textareaRef.current.value
-    addPost(text)
-    setText('')
-  }
+    const onPostChange = () => {
+        setText(textareaRef.current.value)
+    }
 
-  return (
-    <div>
-        My posts
+    const onAddPost = () => {
+        const text = textareaRef.current.value
+        dispatch({
+          type: 'ADD_POST',
+          postText: text,
+        })
+        setText('')
+    }
+
+    return (
         <div>
-          <div>
-            <textarea onChange={onPostChange} value={text} ref={textareaRef}></textarea>
-          </div>  
-          <div>
-            <button onClick={() => onAddPost() }>Add post</button>
-            <button>Remove</button>
-          </div>
+            My posts
+            <div>
+                <div>
+                    <textarea onChange={onPostChange} value={text} ref={textareaRef}></textarea>
+                </div>
+                <div>
+                    <button onClick={() => onAddPost()}>Add post</button>
+                    <button>Remove</button>
+                </div>
+            </div>
+            <div className={style.posts}>
+                {posts}
+            </div>
         </div>
-        <div className={style.posts}>
-          {posts}
-        </div>
-    </div>
-  )
+    )
 }
 
 export default MyPosts

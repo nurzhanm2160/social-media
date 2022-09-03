@@ -18,22 +18,32 @@ export let store = {
             {message: "Как ты?"},
         ]
     },
-    addPost(postText) {
-        const text = {
-            name: "nurik2160",
-            message: postText
-        }
-    
-        this._state.posts.push(text)
-        this._rerenderEntireTree(this._state)
+    _rerenderEntireTree() {
+
     },
+    addPost(postText) {
+
+    },
+
+
     subscribe(observer) {
         this._rerenderEntireTree = observer;
     },
     getState() {
         return this._state
     },
-    _rerenderEntireTree() {
+    dispatch(action) {
+        switch (action.type) {
+            case 'ADD_POST':
+                const text = {
+                    name: "nurik2160",
+                    message: action.postText
+                }
 
+                this._state.posts.push(text)
+                this._rerenderEntireTree(this._state)
+        }
     }
+
+
 }
