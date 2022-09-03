@@ -2,6 +2,7 @@ import React from 'react'
 import {useRef, useState} from 'react'
 
 import style from './MyPosts.module.css'
+import {addPost} from "../../../redux/state";
 
 const MyPosts = ({posts, dispatch}) => {
 
@@ -15,11 +16,7 @@ const MyPosts = ({posts, dispatch}) => {
 
     const onAddPost = () => {
         const text = textareaRef.current.value
-        dispatch({
-          type: 'ADD_POST',
-          postText: text,
-        })
-        setText('')
+        dispatch(addPost(text))
     }
 
     return (

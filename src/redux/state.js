@@ -1,3 +1,5 @@
+const ADD_POST = 'ADD_POST'
+
 export let store = {
     _state: {
         posts: [
@@ -34,7 +36,7 @@ export let store = {
     },
     dispatch(action) {
         switch (action.type) {
-            case 'ADD_POST':
+            case ADD_POST:
                 const text = {
                     name: "nurik2160",
                     message: action.postText
@@ -44,6 +46,6 @@ export let store = {
                 this._rerenderEntireTree(this._state)
         }
     }
-
-
 }
+
+export const addPost = (text) => ({type: ADD_POST, postText: text})
