@@ -1,4 +1,5 @@
-const ADD_POST = 'ADD_POST'
+import {profileReducer} from "./reducers/profileReducer";
+import {dialogsReducer} from "./reducers/dialogsReducer";
 
 export let store = {
     _state: {
@@ -7,23 +8,23 @@ export let store = {
             {name: "dauren", message: "post 2"},
             {name: "narkoz520", message: "post 3"},
         ],
-        dialogs: [
-            {id: 1, name: "Даурен"},
-            {id: 2, name: "Нуркен"},
-            {id: 3, name: "Кусайын"},
-            {id: 4, name: "Быржан"},
-        ],
-        messages: [
-            {message: "Салам"},
-            {message: "Как дела?"},
-            {message: "Что делаешь?"},
-            {message: "Как ты?"},
-        ]
-    },
-    _rerenderEntireTree() {
+        dialogsPage: {
+            dialogs: [
+                {id: 1, name: "Даурен"},
+                {id: 2, name: "Нуркен"},
+                {id: 3, name: "Кусайын"},
+                {id: 4, name: "Быржан"},
+            ],
+            messages: [
+                {message: "Салам"},
+                {message: "Как дела?"},
+                {message: "Что делаешь?"},
+                {message: "Как ты?"},
+            ]
+        },
 
     },
-    addPost(postText) {
+    _rerenderEntireTree() {
 
     },
 
@@ -35,17 +36,10 @@ export let store = {
         return this._state
     },
     dispatch(action) {
-        switch (action.type) {
-            case ADD_POST:
-                const text = {
-                    name: "nurik2160",
-                    message: action.postText
-                }
-
-                this._state.posts.push(text)
-                this._rerenderEntireTree(this._state)
-        }
+        this._state.posts = profileReducer(this._state.posts, action)
+        this._state.dialogsPage = dialogsReducer(this._state.dialogsPage, action)
+        this._rerenderEntireTree(this._state)
     }
 }
 
-export const addPost = (text) => ({type: ADD_POST, postText: text})
+

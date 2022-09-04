@@ -2,7 +2,8 @@ import React from 'react'
 import {useRef, useState} from 'react'
 
 import style from './MyPosts.module.css'
-import {addPost} from "../../../redux/state";
+import {addPost} from "../../../redux/reducers/profileReducer";
+
 
 const MyPosts = ({posts, dispatch}) => {
 
