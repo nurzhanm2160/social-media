@@ -2,9 +2,14 @@ import React from 'react'
 import { useState } from 'react'
 
 import style from './MyPosts.module.css'
+import Post from "./Post/Post";
 
 
-const MyPosts = ({posts, addPost}) => {
+const MyPosts = ({addPost, profilePage}) => {
+
+    const posts = profilePage.posts.map((item, index) => {
+        return <Post name={item.name} message={item.message} key={index}/>
+    })
 
     const [text, setText] = useState('')
 
@@ -14,6 +19,7 @@ const MyPosts = ({posts, addPost}) => {
 
     const onAddPost = () => {
         addPost(text)
+        // setText('')
     }
 
     return (

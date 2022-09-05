@@ -11,13 +11,14 @@ const initialState = {
 export const profileReducer = (state = initialState, action) => {
     switch (action.type) {
         case ADD_POST:
+
             const text = {
                 name: "nurik2160",
                 message: action.postText
             }
 
-            state.posts.push(text)
-            return state
+
+            return {...state, posts: [...state.posts, text]}
         default:
             return state
     }

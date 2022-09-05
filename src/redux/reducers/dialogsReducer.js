@@ -1,3 +1,5 @@
+import message from "../../components/Dialogs/Message/Message";
+
 const ADD_MESSAGE = 'ADD_MESSAGE'
 
 const initialState = {
@@ -19,7 +21,7 @@ export const dialogsReducer = (state = initialState, action) => {
     switch (action.type) {
         case ADD_MESSAGE:
             state.messages.push({message: action.message})
-            return state
+            return {...state, messages: [...state.messages, action.message]}
         default:
             return state
     }

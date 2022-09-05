@@ -1,8 +1,18 @@
 import React, {useState} from 'react'
 
 import style from './Dialogs.module.css'
+import Dialog from "./Dialog/Dialog";
+import Message from "./Message/Message";
 
-const Dialogs = ({dialogs, messages, addMessage}) => {
+const Dialogs = ({addMessage, dialogsPage}) => {
+    const dialogs = dialogsPage.dialogs.map((item, index) => {
+        return <Dialog id={item.id} name={item.name} key={index}/>
+    })
+
+    const messages = dialogsPage.messages.map((item, index) => {
+        return <Message message={item.message} key={index}/>
+    })
+
     const [value, setValue] = useState("")
 
     const onMessageChange = (e) => {
@@ -11,9 +21,8 @@ const Dialogs = ({dialogs, messages, addMessage}) => {
 
     const onAddMessage = () => {
         addMessage(value)
-        setValue('')
+        // setValue('')
     }
-
 
 
     return (
