@@ -26,7 +26,6 @@ const rerenderEntireTree = (state) => {
         return <Post name={item.name} message={item.message} key={index}/>
     })
 
-    debugger
     const dialogs = state.dialogsPage.dialogs.map((item, index) => {
         return <Dialog id={item.id} name={item.name} key={index}/>
     })

@@ -2,22 +2,19 @@ import React from 'react'
 import {useRef, useState} from 'react'
 
 import style from './MyPosts.module.css'
-import {addPost} from "../../../redux/reducers/profileReducer";
+import {addPostAC} from "../../../redux/reducers/profileReducer";
 
 
-const MyPosts = ({posts, dispatch}) => {
+const MyPosts = ({posts, addPost}) => {
 
     const [text, setText] = useState('')
 
-    const textareaRef = useRef(null)
-
-    const onPostChange = () => {
-        setText(textareaRef.current.value)
+    const onPostChange = (e) => {
+        setText(e.target.value)
     }
 
     const onAddPost = () => {
-        const text = textareaRef.current.value
-        dispatch(addPost(text))
+        addPost(text)
     }
 
     return (
@@ -25,10 +22,10 @@ const MyPosts = ({posts, dispatch}) => {
             My posts
             <div>
                 <div>
-                    <textarea onChange={onPostChange} value={text} ref={textareaRef}></textarea>
+                    <textarea onChange={onPostChange} value={text}></textarea>
                 </div>
                 <div>
-                    <button onClick={() => onAddPost()}>Add post</button>
+                    <button onClick={onAddPost}>Add post</button>
                     <button>Remove</button>
                 </div>
             </div>
