@@ -21,7 +21,7 @@ const Dialogs = ({addMessage, dialogsPage}) => {
 
     const onAddMessage = () => {
         addMessage(value)
-        // setValue('')
+        setValue('')
     }
 
 

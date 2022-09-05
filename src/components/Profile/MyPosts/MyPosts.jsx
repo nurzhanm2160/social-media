@@ -19,7 +19,7 @@ const MyPosts = ({addPost, profilePage}) => {
 
     const onAddPost = () => {
         addPost(text)
-        // setText('')
+        setText('')
     }
 
     return (
