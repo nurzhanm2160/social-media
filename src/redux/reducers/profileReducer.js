@@ -1,6 +1,14 @@
 const ADD_POST = 'ADD_POST'
 
-export const profileReducer = (state, action) => {
+const initialState = {
+    posts: [
+        {name: "nurik2160", message: "post 1"},
+        {name: "dauren", message: "post 2"},
+        {name: "narkoz520", message: "post 3"},
+    ],
+}
+
+export const profileReducer = (state = initialState, action) => {
     switch (action.type) {
         case ADD_POST:
             const text = {
@@ -8,7 +16,7 @@ export const profileReducer = (state, action) => {
                 message: action.postText
             }
 
-            state.push(text)
+            state.posts.push(text)
             return state
         default:
             return state

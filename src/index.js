@@ -10,7 +10,7 @@ import Post from './components/Profile/MyPosts/Post/Post'
 import Dialog from './components/Dialogs/Dialog/Dialog'
 import Message from './components/Dialogs/Message/Message';
 
-import {store} from './redux/state'
+import {store} from './redux/reduxStore'
 
 
 const state = store.getState()
@@ -22,11 +22,11 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 const rerenderEntireTree = (state) => {
 
 
-    const posts = state.posts.map((item, index) => {
+    const posts = state.profilePage.posts.map((item, index) => {
         return <Post name={item.name} message={item.message} key={index}/>
     })
-    debugger
 
+    debugger
     const dialogs = state.dialogsPage.dialogs.map((item, index) => {
         return <Dialog id={item.id} name={item.name} key={index}/>
     })
@@ -47,7 +47,10 @@ const rerenderEntireTree = (state) => {
 
 rerenderEntireTree(state)
 
-store.subscribe(rerenderEntireTree)
+store.subscribe(() => {
+    const state = store.getState()
+    rerenderEntireTree(state)
+})
 
 
 // If you want to start measuring performance in your app, pass a function
