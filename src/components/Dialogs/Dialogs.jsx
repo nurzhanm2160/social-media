@@ -1,23 +1,37 @@
-import React from 'react'
+import React, {useState} from 'react'
 
 import style from './Dialogs.module.css'
-import Message from './Message/Message'
-import Dialog from './Dialog/Dialog'
+
+const Dialogs = ({dialogs, messages, addMessage}) => {
+    const [value, setValue] = useState("")
+
+    const onMessageChange = (e) => {
+        setValue(e.target.value)
+    }
+
+    const onAddMessage = () => {
+        addMessage(value)
+        setValue('')
+    }
 
 
 
-
-const Dialogs = ({dialogs, messages}) => {
-  return (
-    <div className={style.dialogsWrapper}>
-        <div className={style.dialogs}>
-            {dialogs}
+    return (
+        <div className={style.dialogsWrapper}>
+            <div className={style.dialogs}>
+                {dialogs}
+            </div>
+            <div className={style.dialog}>
+                {messages}
+                <div>
+                    <textarea value={value} onChange={onMessageChange}></textarea>
+                </div>
+                <div>
+                    <button onClick={onAddMessage}>send message</button>
+                </div>
+            </div>
         </div>
-        <div className={style.dialog}>
-            {messages}
-        </div>
-    </div>
-  )
+    )
 }
 
 export default Dialogs

@@ -1,5 +1,4 @@
 import React from 'react'
-import { NavLink } from 'react-router-dom'
 import LinkWithIcon from '../LinkWithIcon/LinkWithIcon'
 
 import style from './Navbar.module.css'
