@@ -3,23 +3,13 @@ const FOLLOW = 'FOLLOW'
 const UNFOLLOW = 'UNFOLLOW'
 
 let initialState = {
-    users: [
-        {
-            "name": "Shubert", "id": 1, "photos": {
-                "small": null, "large": null
-            }, "status": null, "followed": false
-        }, {
-            "name": "nurik2160", "id": 2, "photos": {
-                "small": null, "large": null
-            }, "status": null, "followed": true
-        },
-    ]
+    users: []
 }
 
 export const usersReducer = (state = initialState, action) => {
     switch (action.type) {
         case SET_USERS:
-            return {...state, users: [...state.users, ...action.users]}
+            return {...state, users: [...action.users]}
         case FOLLOW:
             return {
                 ...state,

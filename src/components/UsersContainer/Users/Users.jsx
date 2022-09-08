@@ -1,11 +1,31 @@
 import React from 'react';
+import axios from "axios";
+//
+// const Users = ({setUsers, follow, unfollow, users}) => {
+//
+//
+//
+//     return ();
+// };
 
-const Users = ({setUsers, follow, unfollow, users}) => {
+class Users extends React.Component {
+    constructor(props) {
+        super(props);
+    }
 
+    componentDidMount() {
+        if(this.props.users.length === 0){
+            axios.get("https://social-network.samuraijs.com/api/1.0/users").then(response => {
+                this.props.setUsers(response.data.items)
+            })
+        }
+    }
 
-    return (<div>
-            {users.map(user => {
-                return (<div key={user.id}>
+    render() {
+        return (
+            <div>
+                {this.props.users.map(user => {
+                    return (<div key={user.id}>
                         <span>
                             <div>
                                 <img
@@ -13,8 +33,8 @@ const Users = ({setUsers, follow, unfollow, users}) => {
                                     alt="UserAvatar"/>
                             </div>
                             <div>
-                                {user.followed ? <button onClick={() => follow(user.id)}>Unfollow</button> :
-                                    <button onClick={() => unfollow(user.id)}>Follow</button>}
+                                {user.followed ? <button onClick={() => this.props.follow(user.id)}>Unfollow</button> :
+                                    <button onClick={() => this.props.unfollow(user.id)}>Follow</button>}
                             </div>
                         </span>
                         <span>
@@ -24,8 +44,10 @@ const Users = ({setUsers, follow, unfollow, users}) => {
                             </span>
                         </span>
                     </div>)
-            })}
-        </div>);
-};
+                })}
+            </div>
+        )
+    }
+}
 
 export default Users;
