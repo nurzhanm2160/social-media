@@ -1,5 +1,3 @@
-import message from "../../components/Dialogs/Message/Message";
-
 const ADD_MESSAGE = 'ADD_MESSAGE'
 
 const initialState = {
