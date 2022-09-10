@@ -1,29 +1,47 @@
 import React from 'react';
 import axios from "axios";
-//
-// const Users = ({setUsers, follow, unfollow, users}) => {
-//
-//
-//
-//     return ();
-// };
+import styles from './Users.module.css'
 
 class Users extends React.Component {
-    constructor(props) {
-        super(props);
-    }
 
     componentDidMount() {
         if(this.props.users.length === 0){
-            axios.get("https://social-network.samuraijs.com/api/1.0/users").then(response => {
-                this.props.setUsers(response.data.items)
+            axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.page}&count=${this.props.count}`).then(response => {
+                const {items, totalCount} = response.data
+                this.props.setUsers(items)
+                this.props.setTotalCount(totalCount)
             })
         }
     }
 
+    onPageChanged = (page) => {
+        this.props.setCurrentPage(page)
+        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.page}&count=${this.props.count}`).then(response => {
+            const {items} = response.data
+            this.props.setUsers(items)
+        })
+    }
+
+
+
     render() {
+        const pagesCount = Math.ceil(this.props.totalCount / this.props.count)
+        let pages = []
+        for(let i = 1; i <= pagesCount; i++) {
+            pages.push(i)
+        }
+
         return (
             <div>
+                {pages.map((item, index) => {
+                    return <span
+                        className={item === this.props.page ? styles.activePage : ""}
+                        key={index}
+                        onClick={() => this.onPageChanged(item)}
+                    >
+                        {item}
+                    </span>
+                })}
                 {this.props.users.map(user => {
                     return (<div key={user.id}>
                         <span>
