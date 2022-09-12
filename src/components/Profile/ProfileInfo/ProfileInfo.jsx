@@ -14,7 +14,8 @@ const ProfileInfo = ({profile}) => {
     return (
         <>
             <div className={styles.container}>
-                    <img src={profile.photos.large ? profile.photos.large : user} alt={"Profile Large Photo"}/>
+                    {profile.fullName}
+                    <img src={profile.photos.large ? profile.photos.large : user} alt="Profile"/>
                 <div >hethe</div>
                 <div>hethe</div>
                 <div>hethe</div>

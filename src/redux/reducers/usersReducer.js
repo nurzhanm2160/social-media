@@ -14,7 +14,7 @@ let initialState = {
     friend: true,
     totalCount: 0,
     isFetching: false,
-    userId: 2
+    userId: 17352
 }
 
 export const usersReducer = (state = initialState, action) => {
