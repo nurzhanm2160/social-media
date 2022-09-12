@@ -1,0 +1,15 @@
+.container {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.profileInformation {
+    display: flex;
+    flex-direction: column;
+}
+
+.profileDescription {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+}

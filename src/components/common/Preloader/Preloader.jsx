@@ -5,7 +5,7 @@ import preloader from '../../../assets/preloader.gif'
 const Preloader = () => {
     return (
         <div>
-            <img src={preloader} />
+            <img src={preloader} alt="Preloader"/>
         </div>
     );
 };
