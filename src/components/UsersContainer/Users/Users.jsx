@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './Users.module.css'
 import {NavLink} from "react-router-dom";
+import {instance} from "../../../api/api";
 
 const Users = ({pages, users, page, onPageChanged, follow, unfollow, onUserClicked}) => {
     return (
@@ -31,8 +32,20 @@ const Users = ({pages, users, page, onPageChanged, follow, unfollow, onUserClick
                                 </NavLink>
                             </div>
                             <div>
-                                {user.followed ? <button onClick={() => follow(user.id)}>Unfollow</button> :
-                                    <button onClick={() => unfollow(user.id)}>Follow</button>}
+                                {user.followed ? <button onClick={() => {
+                                        instance.delete(`follow/${user.id}`).then(response => {
+                                            if(response.data.resultCode === 0){
+                                                unfollow(user.id)
+                                            }
+                                        })
+                                }}>Unfollow</button> :
+                                    <button onClick={() => {
+                                        instance.post(`follow/${user.id}`).then(response => {
+                                            if(response.data.resultCode === 0){
+                                                follow(user.id)
+                                            }
+                                        })
+                                    }}>Follow</button>}
                             </div>
                         </span>
                         <span>

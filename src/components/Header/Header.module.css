@@ -6,4 +6,10 @@
 .header img {
     width: 100px;
 }
+
+.headerItems {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
   
