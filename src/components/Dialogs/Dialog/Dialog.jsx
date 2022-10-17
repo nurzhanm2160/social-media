@@ -1,17 +1,15 @@
-import React from 'react'
+import React from 'react';
 
-import { NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router-dom';
 
-import style from './Dialog.module.css'
+import style from './Dialog.module.css';
 
-const Dialog = ({name, id}) => {
-  return (
-    <div className={style.dialog}>
-        <NavLink to={`/dialogs/${id}`}>
-            {name}
-        </NavLink>
-    </div>
-  )
-}
+const Dialog = ({ name, id }) => {
+    return (
+        <div className={style.dialog}>
+            <NavLink to={`/dialogs/${id}`}>{name}</NavLink>
+        </div>
+    );
+};
 
-export default Dialog
+export default Dialog;

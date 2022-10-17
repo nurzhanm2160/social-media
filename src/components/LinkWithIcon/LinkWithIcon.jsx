@@ -1,23 +1,16 @@
-import React from 'react'
+import React from 'react';
 
-import { NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router-dom';
 
-const LinkWithIcon = ({path, title, Icon, style}) => {
-  return (
-    <div className={style.item}>
-        <NavLink 
-        to={path} 
-        className={({isActive}) => (
-            isActive ? style : null
-        )}
-        >
-            
-            <Icon />
-            {title}
-            
-        </NavLink>
-  </div>
-  )
-}
+const LinkWithIcon = ({ path, title, Icon, style }) => {
+    return (
+        <div className={style.item}>
+            <NavLink to={path} className={({ isActive }) => (isActive ? style : null)}>
+                <Icon />
+                {title}
+            </NavLink>
+        </div>
+    );
+};
 
-export default LinkWithIcon
+export default LinkWithIcon;

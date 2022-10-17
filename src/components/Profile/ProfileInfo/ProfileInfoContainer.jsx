@@ -1,43 +1,30 @@
 import React from 'react';
-import {connect} from "react-redux";
-import {instance} from "../../../api/api";
-import ProfileInfo from "./ProfileInfo";
-import { setUserProfile } from "../../../redux/reducers/profileReducer";
-import withRouter from "../../hocs/withRouter";
-import {setUserId} from "../../../redux/reducers/usersReducer";
+import { connect } from 'react-redux';
+import ProfileInfo from './ProfileInfo';
+import { getProfileThunkCreator } from '../../../redux/reducers/profileReducer';
+import withRouter from '../../hocs/withRouter';
 
 class ProfileInfoContainer extends React.Component {
     componentDidMount() {
-
-        if(!this.props.router.params.userId){
-            instance.get('profile/' + this.props.userId).then(response => {
-                this.props.setUserProfile(response.data)
-            })
+        if (!this.props.router.params.userId) {
+            this.props.getProfileThunkCreator(this.props.userId);
         } else {
-            instance.get('profile/' + this.props.router.params.userId).then(response => {
-                this.props.setUserProfile(response.data)
-            })
+            this.props.getProfileThunkCreator(this.props.router.params.userId);
         }
-
     }
 
     render() {
-        return <ProfileInfo profile={this.props.profile} />
+        return <ProfileInfo profile={this.props.profile} />;
     }
 }
 
 const mapStateToProps = (state) => {
     return {
         profile: state.profilePage.profile,
-        userId: state.usersPage.userId
-    }
-}
+        userId: state.usersPage.userId,
+    };
+};
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        setUserProfile: (profile) => dispatch(setUserProfile(profile)),
-        setUserId: (userId) => dispatch(setUserId(userId))
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ProfileInfoContainer));
+export default connect(mapStateToProps, {
+    getProfileThunkCreator,
+})(withRouter(ProfileInfoContainer));
