@@ -1,6 +1,5 @@
 .container {
     display: flex;
-    justify-content: flex-start;
 }
 
 .profileInformation {
@@ -11,5 +10,10 @@
 .profileDescription {
     display: flex;
     justify-content: space-between;
-    flex-direction: row;
+}
+
+.contacts {
+    display: flex;
+    flex-direction: column;
+    padding-left: 10px;
 }

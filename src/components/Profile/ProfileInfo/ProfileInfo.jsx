@@ -3,6 +3,7 @@ import React from 'react';
 import user from '../../../assets/user.jpg';
 import styles from './ProfileInfo.module.css';
 import Preloader from '../../common/Preloader/Preloader';
+import { ProfileStatus } from './ProfileStatus/ProfileStatus';
 
 const ProfileInfo = ({ profile }) => {
     if (!profile) {
@@ -12,12 +13,20 @@ const ProfileInfo = ({ profile }) => {
     return (
         <>
             <div className={styles.container}>
-                {profile.fullName}
-                <img src={profile.photos.large ? profile.photos.large : user} alt='Profile' />
-                <div>hethe</div>
-                <div>hethe</div>
-                <div>hethe</div>
-                <div>hethe</div>
+                <div className={styles.profileInformation}>
+                    {profile.fullName}
+                    <img src={profile.photos.large ? profile.photos.large : user} alt='Profile' />
+                </div>
+                <div className={styles.profileDescription}>
+                    <div className={styles.contacts}>
+                        <div>Vk:</div>
+                        <div>GitHub:</div>
+                    </div>
+                    <div className={styles.contacts}>
+                        <div>Vk:</div>
+                        <div>GitHub:</div>
+                    </div>
+                </div>
             </div>
             <div>
                 <img
@@ -25,7 +34,7 @@ const ProfileInfo = ({ profile }) => {
                     alt='Background'
                 />
             </div>
-            <div>ava + description</div>
+            <ProfileStatus status={'test'} />
         </>
     );
 };
