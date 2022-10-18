@@ -3,6 +3,7 @@ import { profileApi } from '../../api/profileApi';
 
 const ADD_POST = 'ADD_POST';
 const SET_USER_PROFILE = 'SET_USER_PROFILE';
+const SET_STATUS = 'SET_STATUS';
 
 const initialState = {
     posts: [
@@ -11,6 +12,7 @@ const initialState = {
         { name: 'narkoz520', message: 'post 3' },
     ],
     profile: null,
+    status: '',
 };
 
 export const profileReducer = (state = initialState, action) => {
@@ -27,6 +29,11 @@ export const profileReducer = (state = initialState, action) => {
                 ...state,
                 profile: action.profile,
             };
+        case SET_STATUS:
+            return {
+                ...state,
+                status: action.status,
+            };
         default:
             return state;
     }
@@ -34,11 +41,26 @@ export const profileReducer = (state = initialState, action) => {
 
 export const addPostAC = (text) => ({ type: ADD_POST, postText: text });
 export const setUserProfile = (profile) => ({ type: SET_USER_PROFILE, profile });
+export const setStatus = (status) => ({ type: SET_STATUS, status });
 
 export const getProfileThunkCreator = (userId) => {
     return async (dispatch) => {
         profileApi.getProfile(userId).then((response) => {
             dispatch(setUserProfile(response.data));
         });
+    };
+};
+
+export const getStatusThunkCreator = (userId) => {
+    return async (dispatch) => {
+        await profileApi.getStatus(userId).then((response) => {
+            dispatch(setStatus(response.data));
+        });
+    };
+};
+
+export const updateStatusThunkCreator = (status) => {
+    return async (dispatch) => {
+        await profileApi.updateStatus(status);
     };
 };

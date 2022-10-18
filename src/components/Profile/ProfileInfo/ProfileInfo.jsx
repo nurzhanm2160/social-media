@@ -5,7 +5,7 @@ import styles from './ProfileInfo.module.css';
 import Preloader from '../../common/Preloader/Preloader';
 import { ProfileStatus } from './ProfileStatus/ProfileStatus';
 
-const ProfileInfo = ({ profile }) => {
+const ProfileInfo = ({ profile, status, updateStatus }) => {
     if (!profile) {
         return <Preloader />;
     }
@@ -34,7 +34,7 @@ const ProfileInfo = ({ profile }) => {
                     alt='Background'
                 />
             </div>
-            <ProfileStatus status={'test'} />
+            <ProfileStatus status={status} updateStatus={updateStatus} />
         </>
     );
 };

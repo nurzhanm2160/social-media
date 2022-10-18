@@ -38,3 +38,13 @@ export const authMeThunkCreator = () => {
         });
     };
 };
+
+export const login = (email, password, rememberMe = false) => {
+    return async (dispatch) => {
+        await authApi.login(email, password, rememberMe).then((response) => {
+            if (response.data.resultCode === 0) {
+                dispatch(setAuthDataAC(response.data.data.userId, email, login));
+            }
+        });
+    };
+};
