@@ -11,6 +11,13 @@ import {
 } from '../../redux/reducers/usersReducer';
 import Users from './Users/Users';
 import Preloader from '../common/Preloader/Preloader';
+import {
+    getCountSelector,
+    getIsFetching,
+    getPageSelector,
+    getTotalCountSelector,
+    getUsersSelector,
+} from '../../redux/reducers/usersSelectors';
 
 class UsersContainer extends React.Component {
     componentDidMount() {
@@ -60,11 +67,11 @@ class UsersContainer extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        users: state.usersPage.users,
-        page: state.usersPage.page,
-        count: state.usersPage.count,
-        totalCount: state.usersPage.totalCount,
-        isFetching: state.usersPage.isFetching,
+        users: getUsersSelector(state),
+        page: getPageSelector(state),
+        count: getCountSelector(state),
+        totalCount: getTotalCountSelector(state),
+        isFetching: getIsFetching(state),
     };
 };
 

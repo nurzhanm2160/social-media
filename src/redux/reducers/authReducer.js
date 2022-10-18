@@ -1,6 +1,7 @@
 import { authApi } from '../../api/authApi';
 
 const SET_AUTH_USER_DATA = 'SET_AUTH_USER_DATA';
+const LOGOUT = 'LOGOUT';
 
 const initialState = {
     messages: [],
@@ -18,6 +19,11 @@ export const authReducer = (state = initialState, action) => {
                 ...action.payload,
                 isAuth: true,
             };
+        case LOGOUT:
+            return {
+                ...state,
+                isAuth: false,
+            };
         default:
             return state;
     }
@@ -27,6 +33,8 @@ export const setAuthDataAC = (id, email, login) => ({
     type: SET_AUTH_USER_DATA,
     payload: { id, email, login },
 });
+
+export const logoutAC = () => ({ type: LOGOUT });
 
 export const authMeThunkCreator = () => {
     return async (dispatch) => {
@@ -43,7 +51,17 @@ export const login = (email, password, rememberMe = false) => {
     return async (dispatch) => {
         await authApi.login(email, password, rememberMe).then((response) => {
             if (response.data.resultCode === 0) {
-                dispatch(setAuthDataAC(response.data.data.userId, email, login));
+                dispatch(authMeThunkCreator());
+            }
+        });
+    };
+};
+
+export const logoutThunkCreator = () => {
+    return async (dispatch) => {
+        await authApi.logout().then((response) => {
+            if (response.data.resultCode === 0) {
+                dispatch(logoutAC());
             }
         });
     };
