@@ -1,22 +1,27 @@
 import React from 'react';
 import styles from './Users.module.css';
 import { NavLink } from 'react-router-dom';
-import instance from '../../../api/api';
+import Paginator from '../../common/Paginator/Paginator';
 
-const Users = ({ pages, users, page, onPageChanged, follow, unfollow, onUserClicked }) => {
+const Users = ({
+    users,
+    page,
+    totalCount,
+    count,
+    setCurrentPage,
+    onPageChanged,
+    follow,
+    unfollow,
+    onUserClicked,
+}) => {
     return (
         <div>
-            {pages.map((item, index) => {
-                return (
-                    <span
-                        className={item === page ? styles.activePage : ''}
-                        key={index}
-                        onClick={() => onPageChanged(item)}
-                    >
-                        {item}
-                    </span>
-                );
-            })}
+            <Paginator
+                totalCount={totalCount}
+                count={count}
+                setCurrentPage={setCurrentPage}
+                page={page}
+            />
             {users.map((user) => {
                 return (
                     <div key={user.id}>

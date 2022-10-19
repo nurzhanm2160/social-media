@@ -33,29 +33,20 @@ class UsersContainer extends React.Component {
         }
     }
 
-    onPageChanged = (page) => {
-        this.props.setCurrentPage(page);
-    };
-
     onUserClicked = (userId) => {
         this.props.setUserId(userId);
     };
 
     render() {
-        const pagesCount = Math.ceil(this.props.totalCount / this.props.count);
-        const pages = [];
-        for (let i = 1; i <= pagesCount; i += 1) {
-            pages.push(i);
-        }
-
         return (
             <>
                 {this.props.isFetching && <Preloader />}
                 <Users
-                    pages={pages}
+                    totalCount={this.props.totalCount}
+                    count={this.props.count}
+                    setCurrentPage={this.props.setCurrentPage}
                     users={this.props.users}
                     page={this.props.page}
-                    onPageChanged={this.onPageChanged}
                     follow={this.props.followSuccessThunkCreator}
                     unfollow={this.props.unfollowSuccessThunkCreator}
                     onUserClicked={this.onUserClicked}

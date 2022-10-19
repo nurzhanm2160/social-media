@@ -41,6 +41,7 @@ module.exports = {
         'jsx-a11y/no-static-element-interactions': 0,
         'no-underscore-dangle': 0,
         'jsx-a11y/no-autofocus': 0,
+        'array-callback-return': ['error', { allowImplicit: true }],
 
         'import/order': 0,
         // 'simple-import-sort/exports': 1,

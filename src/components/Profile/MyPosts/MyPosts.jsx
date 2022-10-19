@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { memo, useState } from 'react';
 import style from './MyPosts.module.css';
 import Post from './Post/Post';
 
-const MyPosts = ({ addPost, profilePage }) => {
+const MyPosts = memo(({ addPost, profilePage }) => {
+    console.log('MyPosts');
+
     const posts = profilePage.posts.map((item, index) => {
         return <Post name={item.name} message={item.message} key={index} />;
     });
@@ -33,6 +35,6 @@ const MyPosts = ({ addPost, profilePage }) => {
             <div className={style.posts}>{posts}</div>
         </div>
     );
-};
+});
 
 export default MyPosts;

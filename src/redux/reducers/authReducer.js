@@ -1,7 +1,7 @@
 import { authApi } from '../../api/authApi';
 
-const SET_AUTH_USER_DATA = 'SET_AUTH_USER_DATA';
-const LOGOUT = 'LOGOUT';
+const SET_AUTH_USER_DATA = 'auth/SET_AUTH_USER_DATA';
+const LOGOUT = 'auth/LOGOUT';
 
 const initialState = {
     messages: [],
@@ -38,31 +38,28 @@ export const logoutAC = () => ({ type: LOGOUT });
 
 export const authMeThunkCreator = () => {
     return async (dispatch) => {
-        await authApi.authMe().then((response) => {
-            const { id, email, login } = response.data.data;
-            if (response.data.resultCode === 0) {
-                dispatch(setAuthDataAC(id, email, login));
-            }
-        });
+        const response = await authApi.authMe();
+        const { id, email, login } = response.data.data;
+        if (response.data.resultCode === 0) {
+            dispatch(setAuthDataAC(id, email, login));
+        }
     };
 };
 
 export const login = (email, password, rememberMe = false) => {
     return async (dispatch) => {
-        await authApi.login(email, password, rememberMe).then((response) => {
-            if (response.data.resultCode === 0) {
-                dispatch(authMeThunkCreator());
-            }
-        });
+        const response = await authApi.login(email, password, rememberMe);
+        if (response.data.resultCode === 0) {
+            dispatch(authMeThunkCreator());
+        }
     };
 };
 
 export const logoutThunkCreator = () => {
     return async (dispatch) => {
-        await authApi.logout().then((response) => {
-            if (response.data.resultCode === 0) {
-                dispatch(logoutAC());
-            }
-        });
+        const response = await authApi.logout();
+        if (response.data.resultCode === 0) {
+            dispatch(logoutAC());
+        }
     };
 };
