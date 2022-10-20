@@ -1,5 +1,4 @@
 import { usersApi } from '../../api/usersApi';
-import instance from '../../api/api';
 import { updateObjectInArray } from '../../utils/objectHelpers';
 
 const SET_USERS = 'users/SET_USERS';

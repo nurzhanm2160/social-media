@@ -27,7 +27,7 @@ class UsersContainer extends React.Component {
         }
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
+    componentDidUpdate(prevProps) {
         if (prevProps.page !== this.props.page) {
             this.props.getUsersThunkCreator(this.props.page, this.props.count);
         }

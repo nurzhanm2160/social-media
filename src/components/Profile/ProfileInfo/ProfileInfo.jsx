@@ -1,32 +1,49 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import user from '../../../assets/user.jpg';
 import styles from './ProfileInfo.module.css';
 import Preloader from '../../common/Preloader/Preloader';
 import { ProfileStatus } from './ProfileStatus/ProfileStatus';
+import { ProfileDataForm } from './ProfileDataForm/ProfileDataForm';
+import { ProfileData } from './ProfileData/ProfileData';
 
-const ProfileInfo = ({ profile, status, updateStatus }) => {
+const ProfileInfo = ({ profile, status, updateStatus, owner, saveAvatar }) => {
     if (!profile) {
         return <Preloader />;
     }
+
+    const onAvatarSelected = (e) => {
+        if (e.target.files.length) {
+            saveAvatar(e.target.files[0]);
+        }
+    };
+
+    const [editMode, setEditMode] = useState(false);
+
+    const activeEditMode = () => {
+        setEditMode(true);
+    };
+
+    const deactivateEditMode = () => {
+        setEditMode(false);
+    };
 
     return (
         <>
             <div className={styles.container}>
                 <div className={styles.profileInformation}>
                     {profile.fullName}
-                    <img src={profile.photos.large ? profile.photos.large : user} alt='Profile' />
+                    <img src={profile.photos.large || user} alt='Profile' />
+                    {owner && <input type='file' onChange={(e) => onAvatarSelected(e)} />}
                 </div>
-                <div className={styles.profileDescription}>
-                    <div className={styles.contacts}>
-                        <div>Vk:</div>
-                        <div>GitHub:</div>
-                    </div>
-                    <div className={styles.contacts}>
-                        <div>Vk:</div>
-                        <div>GitHub:</div>
-                    </div>
-                </div>
+                {editMode ? (
+                    <ProfileDataForm
+                        profile={profile}
+                        deactivateEditMode={() => deactivateEditMode()}
+                    />
+                ) : (
+                    <ProfileData profile={profile} activeEditMode={() => activeEditMode()} />
+                )}
             </div>
             <div>
                 <img

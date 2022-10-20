@@ -1,7 +1,7 @@
 import React from 'react';
 
 import style from './Header.module.css';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 const Header = ({ isAuth, login, logout }) => {
     return (
