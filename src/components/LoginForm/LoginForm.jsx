@@ -1,10 +1,11 @@
 import React from 'react';
 import { useFormik } from 'formik';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../redux/reducers/authReducer';
 
 const LoginForm = () => {
     const dispatch = useDispatch();
+    const captchaUrl = useSelector((state) => state.auth.captchaUrl);
 
     const formik = useFormik({
         initialValues: {
@@ -15,8 +16,8 @@ const LoginForm = () => {
         },
         validate: (values) => {},
         onSubmit: (values) => {
-            const { email, password, rememberMe } = values;
-            dispatch(login(email, password, rememberMe));
+            const { email, password, rememberMe, captcha } = values;
+            dispatch(login(email, password, rememberMe, captcha));
         },
     });
 
@@ -42,6 +43,18 @@ const LoginForm = () => {
                         onChange={formik.handleChange}
                     />
                 </div>
+                {captchaUrl && (
+                    <div>
+                        <img src={captchaUrl} alt='Captcha' />
+                        <input
+                            id='captcha'
+                            name='captcha'
+                            onChange={formik.handleChange}
+                            value={formik.values.captcha}
+                            placeholder='captcha'
+                        />
+                    </div>
+                )}
                 <div>
                     <button type='submit'>Login</button>
                 </div>
