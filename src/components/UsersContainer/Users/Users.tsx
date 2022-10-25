@@ -1,8 +1,20 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { NavLink } from 'react-router-dom';
 import Paginator from '../../common/Paginator/Paginator';
+import { UserType } from '../../../type';
 
-const Users = ({
+interface UsersPropsType {
+    users: UserType[];
+    page: number;
+    totalCount: number;
+    count: number;
+    setCurrentPage: (currentPage: number) => void;
+    follow: (userId: number) => void;
+    unfollow: (userId: number) => void;
+    onUserClicked: (userId: number) => void;
+}
+
+const Users: FC<UsersPropsType> = ({
     users,
     page,
     totalCount,
