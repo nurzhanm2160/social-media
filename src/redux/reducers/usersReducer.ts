@@ -62,7 +62,7 @@ export const usersReducer = (state = initialState, action: ActionType): InitialS
     }
 };
 
-interface SetUsersTypeAction {
+export interface SetUsersTypeAction {
     type: typeof SET_USERS;
     users: UserType[];
 }

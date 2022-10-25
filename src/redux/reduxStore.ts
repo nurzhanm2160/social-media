@@ -13,11 +13,16 @@ const rootReducer = combineReducers({
     auth: authReducer,
 });
 
+type RootReducerType = typeof rootReducer;
+export type StateType = ReturnType<RootReducerType>;
+
 const store = createStore(
     rootReducer,
     compose(
         applyMiddleware(thunk),
-        window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
+        // @ts-expect-error
+        // window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
+        window?.__REDUX_DEVTOOLS_EXTENSION__(),
     ),
 );
 
