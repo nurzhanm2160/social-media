@@ -1,5 +1,6 @@
 import { profileApi } from '../../api/profileApi';
 import { authApi } from '../../api/authApi';
+import { $fixMe, PhotosType, PostType, ProfileType } from '../../type';
 
 const ADD_POST = 'profile/ADD_POST';
 const SET_USER_PROFILE = 'profile/SET_USER_PROFILE';
@@ -7,17 +8,19 @@ const SET_STATUS = 'profile/SET_STATUS';
 const REMOVE_POST = 'profile/REMOVE_POST';
 const SET_PHOTO = 'profile/SET_PHOTO';
 
+type InitialType = typeof initialState;
+
 const initialState = {
     posts: [
         { name: 'nurik2160', message: 'post 1', id: 1 },
         { name: 'dauren', message: 'post 2', id: 2 },
         { name: 'narkoz520', message: 'post 3', id: 3 },
-    ],
-    profile: null,
-    status: '',
+    ] as PostType[],
+    profile: null as ProfileType | null,
+    status: '' as string,
 };
 
-export const profileReducer = (state = initialState, action) => {
+export const profileReducer = (state = initialState, action: ActionType): InitialType => {
     switch (action.type) {
         case ADD_POST:
             const text = {
@@ -45,41 +48,74 @@ export const profileReducer = (state = initialState, action) => {
         case SET_PHOTO:
             return {
                 ...state,
-                profile: { ...state.profile, photos: action.avatar },
+                profile: {
+                    ...state.profile,
+                    photos: action.photos,
+                } as ProfileType,
             };
         default:
             return state;
     }
 };
 
-export const addPostAC = (text) => ({ type: ADD_POST, postText: text });
-export const setUserProfile = (profile) => ({ type: SET_USER_PROFILE, profile });
-export const setStatus = (status) => ({ type: SET_STATUS, status });
-export const removePost = (postId) => ({ type: REMOVE_POST, postId });
-export const setPhoto = (avatar) => ({ type: SET_PHOTO, avatar });
+type ActionType =
+    | AddPostActionType
+    | SetUserProfileType
+    | SetStatusActionType
+    | RemovePostActionType
+    | SetPhotoActionType;
 
-export const getProfileThunkCreator = (userId) => {
-    return async (dispatch) => {
+interface AddPostActionType {
+    type: typeof ADD_POST;
+    postText: string;
+}
+export const addPostAC = (text: string): AddPostActionType => ({ type: ADD_POST, postText: text });
+interface SetUserProfileType {
+    type: typeof SET_USER_PROFILE;
+    profile: ProfileType;
+}
+export const setUserProfile = (profile: ProfileType): SetUserProfileType => ({
+    type: SET_USER_PROFILE,
+    profile,
+});
+interface SetStatusActionType {
+    type: typeof SET_STATUS;
+    status: string;
+}
+export const setStatus = (status: string): SetStatusActionType => ({ type: SET_STATUS, status });
+interface RemovePostActionType {
+    type: typeof REMOVE_POST;
+    postId: number;
+}
+export const removePost = (postId: number): RemovePostActionType => ({ type: REMOVE_POST, postId });
+interface SetPhotoActionType {
+    type: typeof SET_PHOTO;
+    photos: PhotosType;
+}
+export const setPhoto = (photos: PhotosType): SetPhotoActionType => ({ type: SET_PHOTO, photos });
+
+export const getProfileThunkCreator = (userId: number) => {
+    return async (dispatch: $fixMe) => {
         const response = await profileApi.getProfile(userId);
         dispatch(setUserProfile(response.data));
     };
 };
 
-export const getStatusThunkCreator = (userId) => {
-    return async (dispatch) => {
+export const getStatusThunkCreator = (userId: number) => {
+    return async (dispatch: $fixMe) => {
         const response = await profileApi.getStatus(userId);
         dispatch(setStatus(response.data));
     };
 };
 
-export const updateStatusThunkCreator = (status) => {
-    return async (dispatch) => {
+export const updateStatusThunkCreator = (status: string) => {
+    return async (dispatch: $fixMe) => {
         await profileApi.updateStatus(status);
     };
 };
 
-export const saveAvatarThunkCreator = (avatar) => {
-    return async (dispatch) => {
+export const saveAvatarThunkCreator = (avatar: $fixMe) => {
+    return async (dispatch: $fixMe) => {
         const response = await profileApi.uploadAvatar(avatar);
 
         if (response.data.resultCode === 0) {
@@ -88,8 +124,8 @@ export const saveAvatarThunkCreator = (avatar) => {
     };
 };
 
-export const updateProfileThunkCreator = (profile) => {
-    return async (dispatch) => {
+export const updateProfileThunkCreator = (profile: ProfileType) => {
+    return async (dispatch: $fixMe) => {
         const response = await profileApi.updateProfile(profile);
         const user = await authApi.authMe();
 
