@@ -1,5 +1,3 @@
-import { $fixMe } from '../../type';
-
 const ADD_MESSAGE = 'ADD_MESSAGE';
 
 type InitialStateType = typeof initialState;
@@ -28,14 +26,16 @@ const initialState = {
     ] as MessageType[],
 };
 
-export const dialogsReducer = (state = initialState, action: $fixMe): InitialStateType => {
+export const dialogsReducer = (state = initialState, action: ActionType): InitialStateType => {
     switch (action.type) {
         case ADD_MESSAGE:
-            return { ...state, messages: [...state.messages, action.message] };
+            return { ...state, messages: [...state.messages, action.message] } as InitialStateType;
         default:
             return state;
     }
 };
+
+type ActionType = AddMessageActionType;
 
 interface AddMessageActionType {
     type: typeof ADD_MESSAGE;

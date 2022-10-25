@@ -1,18 +1,19 @@
 import instance from './api';
+import { $fixMe, ProfileType } from '../type';
 
 export const profileApi = {
-    getProfile(userId) {
-        return instance.get(`profile/${userId}`);
+    getProfile(userId: number) {
+        return instance.get<ProfileType>(`profile/${userId}`);
     },
-    getStatus(userId) {
+    getStatus(userId: number) {
         return instance.get(`/profile/status/${userId}`);
     },
-    updateStatus(status) {
+    updateStatus(status: string) {
         return instance.put(`/profile/status`, {
             status,
         });
     },
-    uploadAvatar(avatar) {
+    uploadAvatar(avatar: $fixMe) {
         const formData = new FormData();
         formData.append('image', avatar);
         return instance.put('/profile/photo', formData, {
@@ -21,7 +22,7 @@ export const profileApi = {
             },
         });
     },
-    updateProfile(profile) {
+    updateProfile(profile: ProfileType) {
         return instance.put(`/profile/`, profile);
     },
 };

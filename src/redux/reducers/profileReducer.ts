@@ -1,6 +1,8 @@
 import { profileApi } from '../../api/profileApi';
 import { authApi } from '../../api/authApi';
 import { $fixMe, PhotosType, PostType, ProfileType } from '../../type';
+import { DispatchType, StateType } from '../reduxStore';
+import { ThunkAction } from 'redux-thunk';
 
 const ADD_POST = 'profile/ADD_POST';
 const SET_USER_PROFILE = 'profile/SET_USER_PROFILE';
@@ -9,6 +11,7 @@ const REMOVE_POST = 'profile/REMOVE_POST';
 const SET_PHOTO = 'profile/SET_PHOTO';
 
 type InitialType = typeof initialState;
+type ThunkType = ThunkAction<void, StateType, unknown, ActionType>;
 
 const initialState = {
     posts: [
@@ -94,28 +97,28 @@ interface SetPhotoActionType {
 }
 export const setPhoto = (photos: PhotosType): SetPhotoActionType => ({ type: SET_PHOTO, photos });
 
-export const getProfileThunkCreator = (userId: number) => {
+export const getProfileThunkCreator = (userId: number): ThunkType => {
     return async (dispatch: $fixMe) => {
         const response = await profileApi.getProfile(userId);
         dispatch(setUserProfile(response.data));
     };
 };
 
-export const getStatusThunkCreator = (userId: number) => {
-    return async (dispatch: $fixMe) => {
+export const getStatusThunkCreator = (userId: number): ThunkType => {
+    return async (dispatch: DispatchType) => {
         const response = await profileApi.getStatus(userId);
         dispatch(setStatus(response.data));
     };
 };
 
-export const updateStatusThunkCreator = (status: string) => {
-    return async (dispatch: $fixMe) => {
+export const updateStatusThunkCreator = (status: string): ThunkType => {
+    return async () => {
         await profileApi.updateStatus(status);
     };
 };
 
-export const saveAvatarThunkCreator = (avatar: $fixMe) => {
-    return async (dispatch: $fixMe) => {
+export const saveAvatarThunkCreator = (avatar: $fixMe): ThunkType => {
+    return async (dispatch: DispatchType) => {
         const response = await profileApi.uploadAvatar(avatar);
 
         if (response.data.resultCode === 0) {
@@ -124,13 +127,13 @@ export const saveAvatarThunkCreator = (avatar: $fixMe) => {
     };
 };
 
-export const updateProfileThunkCreator = (profile: ProfileType) => {
-    return async (dispatch: $fixMe) => {
+export const updateProfileThunkCreator = (profile: ProfileType): ThunkType => {
+    return async (dispatch) => {
         const response = await profileApi.updateProfile(profile);
         const user = await authApi.authMe();
 
         if (response.data.resultCode === 0) {
-            dispatch(getProfileThunkCreator(user.data.data.id));
+            await dispatch(getProfileThunkCreator(user.data.id));
         }
     };
 };

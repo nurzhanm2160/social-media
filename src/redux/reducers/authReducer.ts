@@ -1,12 +1,16 @@
 import { authApi } from '../../api/authApi';
 import { securityApi } from '../../api/securityApi';
 import { $fixMe } from '../../type';
+import { StateType } from '../reduxStore';
+import { ThunkAction } from 'redux-thunk';
+import { ResultCodeForCaptcha, ResultCodesEnum } from '../../api/api';
 
 const SET_AUTH_USER_DATA = 'auth/SET_AUTH_USER_DATA';
 const LOGOUT = 'auth/LOGOUT';
 const SET_CAPTCHA_URL = 'auth/SET_CAPTCHA_URL';
 
 type InitialStateType = typeof initialState;
+type ThunkType = ThunkAction<void, StateType, unknown, ActionType>;
 
 const initialState = {
     messages: [] as string[],
@@ -17,7 +21,7 @@ const initialState = {
     captchaUrl: null as string | null,
 };
 
-export const authReducer = (state = initialState, action: $fixMe): InitialStateType => {
+export const authReducer = (state = initialState, action: ActionType): InitialStateType => {
     switch (action.type) {
         case SET_AUTH_USER_DATA:
             return {
@@ -72,39 +76,46 @@ interface LogoutActionType {
 
 export const logoutAC = (): LogoutActionType => ({ type: LOGOUT });
 
-export const authMeThunkCreator = () => {
-    return async (dispatch: $fixMe) => {
+type ActionType = SetAuthDataActionType | SetCaptchaUrlActionType | LogoutActionType;
+
+export const authMeThunkCreator = (): ThunkType => {
+    return async (dispatch) => {
         const response = await authApi.authMe();
-        const { id, email, login } = response.data.data;
-        if (response.data.resultCode === 0) {
+        const { id, email, login } = response.data;
+        if (response.resultCode === ResultCodesEnum.Success) {
             dispatch(setAuthDataAC(id, email, login));
         }
     };
 };
 
-export const getCaptchaUrlThunkCreator = () => {
-    return async (dispatch: $fixMe) => {
+export const getCaptchaUrlThunkCreator = (): ThunkType => {
+    return async (dispatch) => {
         const response = await securityApi.getCaptcha();
         const captchaUrl = response.data.url;
         dispatch(setCaptchaUrl(captchaUrl));
     };
 };
 
-export const login = (email: string, password: string, rememberMe = false, captcha: $fixMe) => {
-    return async (dispatch: $fixMe) => {
+export const login = (
+    email: string,
+    password: string,
+    rememberMe = false,
+    captcha: $fixMe,
+): ThunkType => {
+    return async (dispatch) => {
         const response = await authApi.login(email, password, rememberMe, captcha);
-        if (response.data.resultCode === 0) {
+        if (response.resultCode === ResultCodesEnum.Success) {
             dispatch(authMeThunkCreator());
-        } else if (response.data.resultCode === 10) {
+        } else if (response.resultCode === ResultCodeForCaptcha.CaptchaIsRequired) {
             dispatch(getCaptchaUrlThunkCreator());
         }
     };
 };
 
-export const logoutThunkCreator = () => {
-    return async (dispatch: $fixMe) => {
+export const logoutThunkCreator = (): ThunkType => {
+    return async (dispatch) => {
         const response = await authApi.logout();
-        if (response.data.resultCode === 0) {
+        if (response.data.resultCode === ResultCodesEnum.Success) {
             dispatch(logoutAC());
         }
     };

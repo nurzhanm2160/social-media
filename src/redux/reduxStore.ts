@@ -13,9 +13,6 @@ const rootReducer = combineReducers({
     auth: authReducer,
 });
 
-type RootReducerType = typeof rootReducer;
-export type StateType = ReturnType<RootReducerType>;
-
 const store = createStore(
     rootReducer,
     compose(
@@ -25,5 +22,9 @@ const store = createStore(
         window?.__REDUX_DEVTOOLS_EXTENSION__(),
     ),
 );
+
+type RootReducerType = typeof rootReducer;
+export type StateType = ReturnType<RootReducerType>;
+export type DispatchType = typeof store.dispatch;
 
 export default store;
