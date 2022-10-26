@@ -4,10 +4,8 @@ import {
     followSuccessThunkCreator,
     getUsersThunkCreator,
     getUsersTotalCountThunkCreator,
-    setCurrentPage,
-    setUserId,
-    setUsers,
     unfollowSuccessThunkCreator,
+    actions,
 } from '../../redux/reducers/usersReducer';
 import Users from './Users/Users';
 import Preloader from '../common/Preloader/Preloader';
@@ -90,9 +88,9 @@ const mapStateToProps = (state: StateType): MapStatePropsType => {
 };
 
 export default connect<MapStatePropsType, MapDispatchPropsType, {}, StateType>(mapStateToProps, {
-    setUsers,
-    setCurrentPage,
-    setUserId,
+    setUsers: actions.setUsers,
+    setCurrentPage: actions.setCurrentPage,
+    setUserId: actions.setUserId,
     getUsersThunkCreator,
     getUsersTotalCountThunkCreator,
     followSuccessThunkCreator,

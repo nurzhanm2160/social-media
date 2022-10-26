@@ -12,9 +12,9 @@ interface LoginResponseType {
     messages: string[];
 }
 
-interface LogoutResponseType {
-    data: {};
-}
+// interface LogoutResponseType {
+//     data: {};
+// }
 
 export const authApi = {
     authMe() {

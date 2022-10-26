@@ -1,16 +1,16 @@
 import { usersApi } from '../../api/usersApi';
 import { updateObjectInArray } from '../../utils/objectHelpers';
 import { $fixMe, UserType } from '../../type';
-import { DispatchType, StateType } from '../reduxStore';
+import { InferActionsType, StateType } from '../reduxStore';
 import { ThunkAction } from 'redux-thunk';
 
-const SET_USERS = 'users/SET_USERS';
-const FOLLOW = 'users/FOLLOW';
-const UNFOLLOW = 'users/UNFOLLOW';
-const SET_CURRENT_PAGE = 'users/SET_CURRENT_PAGE';
-const SET_TOTAL_COUNT = 'users/SET_TOTAL_COUNT';
-const TOGGLE_IS_FETCHING = 'users/TOGGLE_IS_FETCHING';
-const SET_USER_ID = 'users/SET_USER_ID';
+const SET_USERS = 'users/SET_USERS' as const;
+const FOLLOW = 'users/FOLLOW' as const;
+const UNFOLLOW = 'users/UNFOLLOW' as const;
+const SET_CURRENT_PAGE = 'users/SET_CURRENT_PAGE' as const;
+const SET_TOTAL_COUNT = 'users/SET_TOTAL_COUNT' as const;
+const TOGGLE_IS_FETCHING = 'users/TOGGLE_IS_FETCHING' as const;
+const SET_USER_ID = 'users/SET_USER_ID' as const;
 
 type InitialState = typeof initialState;
 type ThunkType = ThunkAction<void, StateType, unknown, ActionType>;
@@ -28,34 +28,34 @@ const initialState = {
 
 export const usersReducer = (state = initialState, action: ActionType): InitialState => {
     switch (action.type) {
-        case SET_USERS:
+        case 'users/SET_USERS':
             return { ...state, users: action.users };
-        case FOLLOW:
+        case 'users/FOLLOW':
             return {
                 ...state,
                 users: updateObjectInArray(state.users, 'id', action.userId, { followed: true }),
             };
-        case UNFOLLOW:
+        case 'users/UNFOLLOW':
             return {
                 ...state,
                 users: updateObjectInArray(state.users, 'id', action.userId, { followed: false }),
             };
-        case SET_CURRENT_PAGE:
+        case 'users/SET_CURRENT_PAGE':
             return {
                 ...state,
                 page: action.page,
             };
-        case SET_TOTAL_COUNT:
+        case 'users/SET_TOTAL_COUNT':
             return {
                 ...state,
                 totalCount: action.totalCount,
             };
-        case TOGGLE_IS_FETCHING:
+        case 'users/TOGGLE_IS_FETCHING':
             return {
                 ...state,
                 isFetching: action.isFetching,
             };
-        case SET_USER_ID:
+        case 'users/SET_USER_ID':
             return {
                 ...state,
                 userId: action.userId,
@@ -65,73 +65,40 @@ export const usersReducer = (state = initialState, action: ActionType): InitialS
     }
 };
 
-export interface SetUsersTypeAction {
-    type: typeof SET_USERS;
-    users: UserType[];
-}
-export const setUsers = (users: UserType[]): SetUsersTypeAction => ({
-    type: SET_USERS,
-    users,
-});
-interface FollowActionType {
-    type: typeof FOLLOW;
-    userId: number;
-}
-export const follow = (userId: number): FollowActionType => ({ type: FOLLOW, userId });
-interface UnfollowTypeAction {
-    type: typeof UNFOLLOW;
-    userId: number;
-}
-export const unfollow = (userId: number): UnfollowTypeAction => ({ type: UNFOLLOW, userId });
-interface SetCurrentPageActionType {
-    type: typeof SET_CURRENT_PAGE;
-    page: number;
-}
+export const actions = {
+    setUsers: (users: UserType[]) => ({
+        type: SET_USERS,
+        users,
+    }),
+    follow: (userId: number) => ({ type: FOLLOW, userId }),
+    unfollow: (userId: number) => ({ type: UNFOLLOW, userId }),
+    setCurrentPage: (page: number) => ({
+        type: SET_CURRENT_PAGE,
+        page,
+    }),
+    setTotalCount: (totalCount: number) => ({
+        type: SET_TOTAL_COUNT,
+        totalCount,
+    }),
+    toggleIsFetching: (isFetching: boolean) =>
+        ({
+            type: TOGGLE_IS_FETCHING,
+            isFetching,
+        } as const),
+    setUserId: (userId: number) => ({ type: SET_USER_ID, userId }),
+};
 
-export const setCurrentPage = (page: number): SetCurrentPageActionType => ({
-    type: SET_CURRENT_PAGE,
-    page,
-});
-interface SetTotalCountActionType {
-    type: typeof SET_TOTAL_COUNT;
-    totalCount: number;
-}
-export const setTotalCount = (totalCount: number): SetTotalCountActionType => ({
-    type: SET_TOTAL_COUNT,
-    totalCount,
-});
-interface ToggleIsFetchingActionType {
-    type: typeof TOGGLE_IS_FETCHING;
-    isFetching: boolean;
-}
-export const toggleIsFetching = (isFetching: boolean): ToggleIsFetchingActionType => ({
-    type: TOGGLE_IS_FETCHING,
-    isFetching,
-});
-interface SetUserIdType {
-    type: typeof SET_USER_ID;
-    userId: number;
-}
-export const setUserId = (userId: number): SetUserIdType => ({ type: SET_USER_ID, userId });
-
-type ActionType =
-    | SetUsersTypeAction
-    | FollowActionType
-    | UnfollowTypeAction
-    | SetTotalCountActionType
-    | ToggleIsFetchingActionType
-    | SetUserIdType
-    | SetCurrentPageActionType;
+type ActionType = InferActionsType<typeof actions>;
 
 export const getUsersThunkCreator = (page: number, count: number): ThunkType => {
     return async (dispatch) => {
-        dispatch(toggleIsFetching(true));
+        dispatch(actions.toggleIsFetching(true));
 
         const response = await usersApi.getUsers(page, count);
 
-        dispatch(toggleIsFetching(false));
+        dispatch(actions.toggleIsFetching(false));
         const { items } = await response.data;
-        dispatch(setUsers(items));
+        dispatch(actions.setUsers(items));
     };
 };
 
@@ -139,18 +106,12 @@ export const getUsersTotalCountThunkCreator = (): ThunkType => {
     return async (dispatch) => {
         const response = await usersApi.getUsers();
         const { totalCount } = response.data;
-        dispatch(setTotalCount(totalCount));
+        dispatch(actions.setTotalCount(totalCount));
     };
 };
 
-type ActionCreatorType = (userId: number) => FollowActionType | UnfollowTypeAction;
-
-const _followUnfollowFlow = (
-    apiMethod: $fixMe,
-    actionCreator: ActionCreatorType,
-    userId: number,
-) => {
-    return async (dispatch: DispatchType) => {
+const _followUnfollowFlow = (apiMethod: $fixMe, actionCreator: $fixMe, userId: number) => {
+    return async (dispatch: $fixMe) => {
         const response = await apiMethod(userId);
         if (response.data.resultCode === 0) {
             dispatch(actionCreator(userId));
@@ -161,13 +122,13 @@ const _followUnfollowFlow = (
 export const followSuccessThunkCreator = (userId: number): ThunkType => {
     return async (dispatch) => {
         const apiMethod = usersApi.follow.bind(usersApi);
-        await dispatch(_followUnfollowFlow(apiMethod, follow, userId));
+        await dispatch(_followUnfollowFlow(apiMethod, actions.follow, userId));
     };
 };
 
 export const unfollowSuccessThunkCreator = (userId: number): ThunkType => {
     return async (dispatch) => {
         const apiMethod = usersApi.unfollow.bind(usersApi);
-        await dispatch(_followUnfollowFlow(apiMethod, unfollow, userId));
+        await dispatch(_followUnfollowFlow(apiMethod, actions.unfollow, userId));
     };
 };

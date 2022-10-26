@@ -1,7 +1,7 @@
 import { profileApi } from '../../api/profileApi';
 import { authApi } from '../../api/authApi';
 import { $fixMe, PhotosType, PostType, ProfileType } from '../../type';
-import { DispatchType, StateType } from '../reduxStore';
+import { StateType } from '../reduxStore';
 import { ThunkAction } from 'redux-thunk';
 
 const ADD_POST = 'profile/ADD_POST';
@@ -105,7 +105,7 @@ export const getProfileThunkCreator = (userId: number): ThunkType => {
 };
 
 export const getStatusThunkCreator = (userId: number): ThunkType => {
-    return async (dispatch: DispatchType) => {
+    return async (dispatch) => {
         const response = await profileApi.getStatus(userId);
         dispatch(setStatus(response.data));
     };
@@ -118,7 +118,7 @@ export const updateStatusThunkCreator = (status: string): ThunkType => {
 };
 
 export const saveAvatarThunkCreator = (avatar: $fixMe): ThunkType => {
-    return async (dispatch: DispatchType) => {
+    return async (dispatch) => {
         const response = await profileApi.uploadAvatar(avatar);
 
         if (response.data.resultCode === 0) {
