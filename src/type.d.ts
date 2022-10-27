@@ -38,3 +38,9 @@ export type UserType = {
     photos: PhotosType;
     followed: boolean;
 };
+
+export interface GetUsersType {
+    items: UserType[];
+    totalCount: number;
+    error: string | null;
+}

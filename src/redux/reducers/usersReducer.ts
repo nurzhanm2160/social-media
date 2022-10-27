@@ -97,7 +97,7 @@ export const getUsersThunkCreator = (page: number, count: number): ThunkType => 
         const response = await usersApi.getUsers(page, count);
 
         dispatch(actions.toggleIsFetching(false));
-        const { items } = await response.data;
+        const { items } = await response;
         dispatch(actions.setUsers(items));
     };
 };
@@ -105,7 +105,7 @@ export const getUsersThunkCreator = (page: number, count: number): ThunkType => 
 export const getUsersTotalCountThunkCreator = (): ThunkType => {
     return async (dispatch) => {
         const response = await usersApi.getUsers();
-        const { totalCount } = response.data;
+        const { totalCount } = response;
         dispatch(actions.setTotalCount(totalCount));
     };
 };
