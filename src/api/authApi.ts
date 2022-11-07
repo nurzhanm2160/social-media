@@ -1,11 +1,5 @@
 import instance, { ResultCodeForCaptcha, ResultCodesEnum } from './api';
 
-type ResponseType<D = {}, RC = ResultCodesEnum> = {
-    data: D;
-    messages: string[];
-    resultCode: RC;
-};
-
 interface MeResponseDataType {
     id: number;
     email: string;
