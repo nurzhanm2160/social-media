@@ -91,7 +91,7 @@ export const authMeThunkCreator = (): ThunkType => {
 export const getCaptchaUrlThunkCreator = (): ThunkType => {
     return async (dispatch) => {
         const response = await securityApi.getCaptcha();
-        const captchaUrl = response.data.url;
+        const captchaUrl = response.url;
         dispatch(setCaptchaUrl(captchaUrl));
     };
 };
