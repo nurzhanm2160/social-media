@@ -1,15 +1,19 @@
 import instance, { ResultCodeForCaptcha, ResultCodesEnum } from './api';
 
-interface MeResponseType {
-    data: { id: number; email: string; login: string };
-    resultCode: ResultCodesEnum;
+type ResponseType<D = {}, RC = ResultCodesEnum> = {
+    data: D;
     messages: string[];
+    resultCode: RC;
+};
+
+interface MeResponseDataType {
+    id: number;
+    email: string;
+    login: string;
 }
 
 interface LoginResponseType {
-    data: { userId: number };
-    resultCode: ResultCodesEnum | ResultCodeForCaptcha;
-    messages: string[];
+    userId: number;
 }
 
 // interface LogoutResponseType {
@@ -18,16 +22,19 @@ interface LoginResponseType {
 
 export const authApi = {
     authMe() {
-        return instance.get<MeResponseType>(`auth/me`).then((res) => res.data);
+        return instance.get<ResponseType<MeResponseDataType>>(`auth/me`).then((res) => res.data);
     },
     login(email: string, password: string, rememberMe: boolean, captcha: null | string = null) {
         return instance
-            .post<LoginResponseType>(`auth/login`, {
-                email,
-                password,
-                rememberMe,
-                captcha,
-            })
+            .post<ResponseType<LoginResponseType, ResultCodesEnum | ResultCodeForCaptcha>>(
+                `auth/login`,
+                {
+                    email,
+                    password,
+                    rememberMe,
+                    captcha,
+                },
+            )
             .then((res) => res.data);
     },
     logout() {

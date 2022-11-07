@@ -8,7 +8,7 @@ export const usersApi = {
             .then((res) => res.data);
     },
     follow(userId: number) {
-        return instance.post(`follow/${userId}`);
+        return instance.post<>(`follow/${userId}`);
     },
     unfollow(userId: number) {
         return instance.delete(`follow/${userId}`);
