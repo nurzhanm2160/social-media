@@ -1,10 +1,10 @@
 import axios from 'axios';
 
-export type ResponseType<D = {}, RC = ResultCodesEnum> = {
+export interface ResponseType<D = {}, RC = ResultCodesEnum> {
     data: D;
     messages: string[];
     resultCode: RC;
-};
+}
 
 export enum ResultCodesEnum {
     Success = 0,

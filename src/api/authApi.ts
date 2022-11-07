@@ -1,4 +1,4 @@
-import instance, { ResultCodeForCaptcha, ResultCodesEnum } from './api';
+import instance, { ResultCodeForCaptcha, ResultCodesEnum, ResponseType } from './api';
 
 interface MeResponseDataType {
     id: number;
@@ -9,10 +9,6 @@ interface MeResponseDataType {
 interface LoginResponseType {
     userId: number;
 }
-
-// interface LogoutResponseType {
-//     data: {};
-// }
 
 export const authApi = {
     authMe() {

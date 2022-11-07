@@ -1,4 +1,4 @@
-import instance from './api';
+import instance, { ResponseType } from './api';
 import { GetUsersType } from '../type';
 
 export const usersApi = {
@@ -8,9 +8,9 @@ export const usersApi = {
             .then((res) => res.data);
     },
     follow(userId: number) {
-        return instance.post<>(`follow/${userId}`);
+        return instance.post<ResponseType>(`follow/${userId}`).then((res) => res.data);
     },
     unfollow(userId: number) {
-        return instance.delete(`follow/${userId}`);
+        return instance.delete<ResponseType>(`follow/${userId}`).then((res) => res.data);
     },
 };

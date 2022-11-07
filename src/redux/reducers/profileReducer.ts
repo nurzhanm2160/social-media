@@ -100,14 +100,14 @@ export const setPhoto = (photos: PhotosType): SetPhotoActionType => ({ type: SET
 export const getProfileThunkCreator = (userId: number): ThunkType => {
     return async (dispatch: $fixMe) => {
         const response = await profileApi.getProfile(userId);
-        dispatch(setUserProfile(response.data));
+        dispatch(setUserProfile(response));
     };
 };
 
 export const getStatusThunkCreator = (userId: number): ThunkType => {
     return async (dispatch) => {
         const response = await profileApi.getStatus(userId);
-        dispatch(setStatus(response.data));
+        dispatch(setStatus(response));
     };
 };
 
@@ -121,8 +121,8 @@ export const saveAvatarThunkCreator = (avatar: $fixMe): ThunkType => {
     return async (dispatch) => {
         const response = await profileApi.uploadAvatar(avatar);
 
-        if (response.data.resultCode === 0) {
-            dispatch(setPhoto(response.data.data.photos));
+        if (response.resultCode === 0) {
+            dispatch(setPhoto(response.data.photos));
         }
     };
 };
@@ -132,7 +132,7 @@ export const updateProfileThunkCreator = (profile: ProfileType): ThunkType => {
         const response = await profileApi.updateProfile(profile);
         const user = await authApi.authMe();
 
-        if (response.data.resultCode === 0) {
+        if (response.resultCode === 0) {
             await dispatch(getProfileThunkCreator(user.data.id));
         }
     };
