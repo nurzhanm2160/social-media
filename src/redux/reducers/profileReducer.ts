@@ -1,17 +1,18 @@
 import { profileApi } from '../../api/profileApi';
 import { authApi } from '../../api/authApi';
 import { $fixMe, PhotosType, PostType, ProfileType } from '../../type';
-import { StateType } from '../reduxStore';
+import { InferActionsType, StateType } from '../reduxStore';
 import { ThunkAction } from 'redux-thunk';
 
-const ADD_POST = 'profile/ADD_POST';
-const SET_USER_PROFILE = 'profile/SET_USER_PROFILE';
-const SET_STATUS = 'profile/SET_STATUS';
-const REMOVE_POST = 'profile/REMOVE_POST';
-const SET_PHOTO = 'profile/SET_PHOTO';
+const ADD_POST = 'profile/ADD_POST' as const;
+const SET_USER_PROFILE = 'profile/SET_USER_PROFILE' as const;
+const SET_STATUS = 'profile/SET_STATUS' as const;
+const REMOVE_POST = 'profile/REMOVE_POST' as const;
+const SET_PHOTO = 'profile/SET_PHOTO' as const;
 
 type InitialType = typeof initialState;
-type ThunkType = ThunkAction<void, StateType, unknown, ActionType>;
+type ActionsType = InferActionsType<typeof actions>;
+type ThunkType = ThunkAction<void, StateType, unknown, ActionsType>;
 
 const initialState = {
     posts: [
@@ -23,7 +24,7 @@ const initialState = {
     status: '' as string,
 };
 
-export const profileReducer = (state = initialState, action: ActionType): InitialType => {
+export const profileReducer = (state = initialState, action: ActionsType): InitialType => {
     switch (action.type) {
         case ADD_POST:
             const text = {
@@ -61,53 +62,28 @@ export const profileReducer = (state = initialState, action: ActionType): Initia
     }
 };
 
-type ActionType =
-    | AddPostActionType
-    | SetUserProfileType
-    | SetStatusActionType
-    | RemovePostActionType
-    | SetPhotoActionType;
-
-interface AddPostActionType {
-    type: typeof ADD_POST;
-    postText: string;
-}
-export const addPostAC = (text: string): AddPostActionType => ({ type: ADD_POST, postText: text });
-interface SetUserProfileType {
-    type: typeof SET_USER_PROFILE;
-    profile: ProfileType;
-}
-export const setUserProfile = (profile: ProfileType): SetUserProfileType => ({
-    type: SET_USER_PROFILE,
-    profile,
-});
-interface SetStatusActionType {
-    type: typeof SET_STATUS;
-    status: string;
-}
-export const setStatus = (status: string): SetStatusActionType => ({ type: SET_STATUS, status });
-interface RemovePostActionType {
-    type: typeof REMOVE_POST;
-    postId: number;
-}
-export const removePost = (postId: number): RemovePostActionType => ({ type: REMOVE_POST, postId });
-interface SetPhotoActionType {
-    type: typeof SET_PHOTO;
-    photos: PhotosType;
-}
-export const setPhoto = (photos: PhotosType): SetPhotoActionType => ({ type: SET_PHOTO, photos });
+export const actions = {
+    addPostAC: (text: string) => ({ type: ADD_POST, postText: text }),
+    setUserProfile: (profile: ProfileType) => ({
+        type: SET_USER_PROFILE,
+        profile,
+    }),
+    setStatus: (status: string) => ({ type: SET_STATUS, status }),
+    removePost: (postId: number) => ({ type: REMOVE_POST, postId }),
+    setPhoto: (photos: PhotosType) => ({ type: SET_PHOTO, photos }),
+};
 
 export const getProfileThunkCreator = (userId: number): ThunkType => {
     return async (dispatch: $fixMe) => {
         const response = await profileApi.getProfile(userId);
-        dispatch(setUserProfile(response));
+        dispatch(actions.setUserProfile(response));
     };
 };
 
 export const getStatusThunkCreator = (userId: number): ThunkType => {
     return async (dispatch) => {
         const response = await profileApi.getStatus(userId);
-        dispatch(setStatus(response));
+        dispatch(actions.setStatus(response));
     };
 };
 
@@ -122,7 +98,7 @@ export const saveAvatarThunkCreator = (avatar: $fixMe): ThunkType => {
         const response = await profileApi.uploadAvatar(avatar);
 
         if (response.resultCode === 0) {
-            dispatch(setPhoto(response.data.photos));
+            dispatch(actions.setPhoto(response.data.photos));
         }
     };
 };
