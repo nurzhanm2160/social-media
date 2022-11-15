@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import Dialogs from './Dialogs';
-import { addMessageAC } from '../../redux/reducers/dialogsReducer';
+import { actions } from '../../redux/reducers/dialogsReducer';
 
 const mapStateToProps = (state) => {
     return {
@@ -11,7 +11,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        addMessage: (message) => dispatch(addMessageAC(message)),
+        addMessage: (message) => dispatch(actions.addMessageAC(message)),
     };
 };
 
