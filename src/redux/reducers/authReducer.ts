@@ -1,16 +1,17 @@
 import { authApi } from '../../api/authApi';
 import { securityApi } from '../../api/securityApi';
 import { $fixMe } from '../../type';
-import { StateType } from '../reduxStore';
+import { InferActionsType, StateType } from '../reduxStore';
 import { ThunkAction } from 'redux-thunk';
 import { ResultCodeForCaptcha, ResultCodesEnum } from '../../api/api';
 
-const SET_AUTH_USER_DATA = 'auth/SET_AUTH_USER_DATA';
-const LOGOUT = 'auth/LOGOUT';
-const SET_CAPTCHA_URL = 'auth/SET_CAPTCHA_URL';
+const SET_AUTH_USER_DATA = 'auth/SET_AUTH_USER_DATA' as const;
+const LOGOUT = 'auth/LOGOUT' as const;
+const SET_CAPTCHA_URL = 'auth/SET_CAPTCHA_URL' as const;
 
 type InitialStateType = typeof initialState;
-type ThunkType = ThunkAction<void, StateType, unknown, ActionType>;
+type ActionsType = InferActionsType<typeof actions>;
+type ThunkType = ThunkAction<void, StateType, unknown, ActionsType>;
 
 const initialState = {
     messages: [] as string[],
@@ -21,7 +22,7 @@ const initialState = {
     captchaUrl: null as string | null,
 };
 
-export const authReducer = (state = initialState, action: ActionType): InitialStateType => {
+export const authReducer = (state = initialState, action: ActionsType): InitialStateType => {
     switch (action.type) {
         case SET_AUTH_USER_DATA:
             return {
@@ -44,46 +45,24 @@ export const authReducer = (state = initialState, action: ActionType): InitialSt
     }
 };
 
-interface SetAuthDataActionPayloadType {
-    id: number;
-    email: string;
-    login: string;
-}
-
-interface SetAuthDataActionType {
-    type: typeof SET_AUTH_USER_DATA;
-    payload: SetAuthDataActionPayloadType;
-}
-
-export const setAuthDataAC = (id: number, email: string, login: string): SetAuthDataActionType => ({
-    type: SET_AUTH_USER_DATA,
-    payload: { id, email, login },
-});
-
-interface SetCaptchaUrlActionType {
-    type: typeof SET_CAPTCHA_URL;
-    captchaUrl: string;
-}
-
-const setCaptchaUrl = (captchaUrl: string): SetCaptchaUrlActionType => ({
-    type: SET_CAPTCHA_URL,
-    captchaUrl,
-});
-
-interface LogoutActionType {
-    type: typeof LOGOUT;
-}
-
-export const logoutAC = (): LogoutActionType => ({ type: LOGOUT });
-
-type ActionType = SetAuthDataActionType | SetCaptchaUrlActionType | LogoutActionType;
+export const actions = {
+    setAuthDataAC: (id: number, email: string, login: string) => ({
+        type: SET_AUTH_USER_DATA,
+        payload: { id, email, login },
+    }),
+    setCaptchaUrl: (captchaUrl: string) => ({
+        type: SET_CAPTCHA_URL,
+        captchaUrl,
+    }),
+    logoutAC: () => ({ type: LOGOUT }),
+};
 
 export const authMeThunkCreator = (): ThunkType => {
     return async (dispatch) => {
         const response = await authApi.authMe();
         const { id, email, login } = response.data;
         if (response.resultCode === ResultCodesEnum.Success) {
-            dispatch(setAuthDataAC(id, email, login));
+            dispatch(actions.setAuthDataAC(id, email, login));
         }
     };
 };
@@ -92,7 +71,7 @@ export const getCaptchaUrlThunkCreator = (): ThunkType => {
     return async (dispatch) => {
         const response = await securityApi.getCaptcha();
         const captchaUrl = response.url;
-        dispatch(setCaptchaUrl(captchaUrl));
+        dispatch(actions.setCaptchaUrl(captchaUrl));
     };
 };
 
@@ -116,7 +95,7 @@ export const logoutThunkCreator = (): ThunkType => {
     return async (dispatch) => {
         const response = await authApi.logout();
         if (response.data.resultCode === ResultCodesEnum.Success) {
-            dispatch(logoutAC());
+            dispatch(actions.logoutAC());
         }
     };
 };
