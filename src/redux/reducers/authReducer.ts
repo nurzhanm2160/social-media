@@ -1,8 +1,8 @@
 import { authApi } from '../../api/authApi';
 import { securityApi } from '../../api/securityApi';
-import { $fixMe } from '../../type';
 import { BaseThunkType, InferActionsType } from '../reduxStore';
 import { ResultCodeForCaptcha, ResultCodesEnum } from '../../api/api';
+import { $fixMe } from '../../type';
 
 const SET_AUTH_USER_DATA = 'auth/SET_AUTH_USER_DATA' as const;
 const LOGOUT = 'auth/LOGOUT' as const;
@@ -78,9 +78,9 @@ export const login = (
     email: string,
     password: string,
     rememberMe = false,
-    captcha: $fixMe,
-): ThunkType => {
-    return async (dispatch) => {
+    captcha: string | null,
+): $fixMe => {
+    return async (dispatch: $fixMe) => {
         const response = await authApi.login(email, password, rememberMe, captcha);
         if (response.resultCode === ResultCodesEnum.Success) {
             await dispatch(authMeThunkCreator());

@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../redux/reducers/authReducer';
+import { StateType } from '../../redux/reduxStore';
 
-const LoginForm = () => {
+const LoginForm: FC = () => {
     const dispatch = useDispatch();
-    const captchaUrl = useSelector((state) => state.auth.captchaUrl);
+    const captchaUrl = useSelector((state: StateType) => state.auth.captchaUrl);
 
     const formik = useFormik({
         initialValues: {
@@ -43,7 +44,7 @@ const LoginForm = () => {
                         onChange={formik.handleChange}
                     />
                 </div>
-                {captchaUrl && (
+                {captchaUrl !== null && (
                     <div>
                         <img src={captchaUrl} alt='Captcha' />
                         <input
