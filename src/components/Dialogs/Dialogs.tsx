@@ -1,10 +1,16 @@
-import React, { useState } from 'react';
+import React, { ChangeEvent, FC, useState } from 'react';
 
 import style from './Dialogs.module.css';
 import Dialog from './Dialog/Dialog';
 import Message from './Message/Message';
+import { InitialStateType } from '../../redux/reducers/dialogsReducer';
 
-const Dialogs = ({ addMessage, dialogsPage }) => {
+interface PropsType {
+    dialogsPage: InitialStateType;
+    addMessage: (value: string) => void;
+}
+
+const Dialogs: FC<PropsType> = ({ addMessage, dialogsPage }) => {
     const dialogs = dialogsPage.dialogs.map((item, index) => {
         return <Dialog id={item.id} name={item.name} key={index} />;
     });
@@ -15,7 +21,7 @@ const Dialogs = ({ addMessage, dialogsPage }) => {
 
     const [value, setValue] = useState('');
 
-    const onMessageChange = (e) => {
+    const onMessageChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
         setValue(e.target.value);
     };
 
@@ -30,7 +36,7 @@ const Dialogs = ({ addMessage, dialogsPage }) => {
             <div className={style.dialog}>
                 {messages}
                 <div>
-                    <textarea value={value} onChange={onMessageChange} />
+                    <textarea value={value} onChange={(e) => onMessageChange(e)} />
                 </div>
                 <div>
                     <button onClick={onAddMessage}>send message</button>

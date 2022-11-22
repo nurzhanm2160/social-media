@@ -2,7 +2,7 @@ import { InferActionsType } from '../reduxStore';
 
 const ADD_MESSAGE = 'ADD_MESSAGE' as const;
 
-type InitialStateType = typeof initialState;
+export type InitialStateType = typeof initialState;
 type ActionsType = InferActionsType<typeof actions>;
 
 interface DialogType {
