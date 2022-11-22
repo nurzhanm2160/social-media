@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import Dialogs from './Dialogs';
-import { actions } from '../../redux/reducers/dialogsReducer';
+import { actions, DialogType, MessageType } from '../../redux/reducers/dialogsReducer';
 import { StateType } from '../../redux/reduxStore';
 import { $fixMe } from '../../type';
 
@@ -11,6 +11,22 @@ const mapStateToProps = (state: StateType): $fixMe => {
     };
 };
 
-const DialogsContainer = connect(mapStateToProps, { ...actions })(Dialogs);
+interface DialogsPageType {
+    dialogs: DialogType[];
+    messages: MessageType[];
+}
+
+interface MapStatePropsType {
+    dialogsPage: DialogsPageType;
+}
+
+interface MapDispatchPropsType {
+    addMessage: (message: string) => void;
+}
+
+const DialogsContainer = connect<MapStatePropsType, MapDispatchPropsType, {}, StateType>(
+    mapStateToProps,
+    { addMessage: actions.addMessage },
+)(Dialogs);
 
 export default DialogsContainer;

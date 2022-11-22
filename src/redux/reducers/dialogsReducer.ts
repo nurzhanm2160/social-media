@@ -5,12 +5,12 @@ const ADD_MESSAGE = 'ADD_MESSAGE' as const;
 export type InitialStateType = typeof initialState;
 type ActionsType = InferActionsType<typeof actions>;
 
-interface DialogType {
+export interface DialogType {
     id: number;
     name: string;
 }
 
-interface MessageType {
+export interface MessageType {
     message: string;
 }
 

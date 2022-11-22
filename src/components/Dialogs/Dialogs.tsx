@@ -21,11 +21,11 @@ const Dialogs: FC<PropsType> = ({ addMessage, dialogsPage }) => {
 
     const [value, setValue] = useState('');
 
-    const onMessageChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    const onMessageChange = (e: ChangeEvent<HTMLTextAreaElement>): void => {
         setValue(e.target.value);
     };
 
-    const onAddMessage = () => {
+    const onAddMessage = (): void => {
         addMessage(value);
         setValue('');
     };
