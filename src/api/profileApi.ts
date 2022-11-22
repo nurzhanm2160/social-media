@@ -1,5 +1,5 @@
 import instance, { ResponseType } from './api';
-import { $fixMe, PhotosType, ProfileType } from '../type';
+import { PhotosType, ProfileType } from '../type';
 
 interface UploadPhotoResponseType {
     photos: PhotosType;
@@ -19,7 +19,7 @@ export const profileApi = {
             })
             .then((res) => res.data);
     },
-    uploadAvatar(avatar: $fixMe) {
+    uploadAvatar(avatar: File) {
         const formData = new FormData();
         formData.append('image', avatar);
         return instance
