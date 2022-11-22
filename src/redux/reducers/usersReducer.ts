@@ -1,8 +1,7 @@
 import { usersApi } from '../../api/usersApi';
 import { updateObjectInArray } from '../../utils/objectHelpers';
 import { $fixMe, UserType } from '../../type';
-import { InferActionsType, StateType } from '../reduxStore';
-import { ThunkAction } from 'redux-thunk';
+import { BaseThunkType, InferActionsType } from '../reduxStore';
 
 const SET_USERS = 'users/SET_USERS' as const;
 const FOLLOW = 'users/FOLLOW' as const;
@@ -13,7 +12,7 @@ const TOGGLE_IS_FETCHING = 'users/TOGGLE_IS_FETCHING' as const;
 const SET_USER_ID = 'users/SET_USER_ID' as const;
 
 type InitialState = typeof initialState;
-type ThunkType = ThunkAction<void, StateType, unknown, ActionType>;
+type ThunkType = BaseThunkType<ActionType>;
 
 const initialState = {
     users: [] as UserType[],

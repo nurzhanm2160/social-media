@@ -1,8 +1,7 @@
 import { authApi } from '../../api/authApi';
 import { securityApi } from '../../api/securityApi';
 import { $fixMe } from '../../type';
-import { InferActionsType, StateType } from '../reduxStore';
-import { ThunkAction } from 'redux-thunk';
+import { BaseThunkType, InferActionsType } from '../reduxStore';
 import { ResultCodeForCaptcha, ResultCodesEnum } from '../../api/api';
 
 const SET_AUTH_USER_DATA = 'auth/SET_AUTH_USER_DATA' as const;
@@ -11,7 +10,7 @@ const SET_CAPTCHA_URL = 'auth/SET_CAPTCHA_URL' as const;
 
 type InitialStateType = typeof initialState;
 type ActionsType = InferActionsType<typeof actions>;
-type ThunkType = ThunkAction<void, StateType, unknown, ActionsType>;
+type ThunkType = BaseThunkType<ActionsType>;
 
 const initialState = {
     messages: [] as string[],
@@ -84,9 +83,9 @@ export const login = (
     return async (dispatch) => {
         const response = await authApi.login(email, password, rememberMe, captcha);
         if (response.resultCode === ResultCodesEnum.Success) {
-            dispatch(authMeThunkCreator());
+            await dispatch(authMeThunkCreator());
         } else if (response.resultCode === ResultCodeForCaptcha.CaptchaIsRequired) {
-            dispatch(getCaptchaUrlThunkCreator());
+            await dispatch(getCaptchaUrlThunkCreator());
         }
     };
 };

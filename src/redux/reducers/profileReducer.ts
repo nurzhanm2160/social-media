@@ -1,8 +1,7 @@
 import { profileApi } from '../../api/profileApi';
 import { authApi } from '../../api/authApi';
 import { $fixMe, PhotosType, PostType, ProfileType } from '../../type';
-import { InferActionsType, StateType } from '../reduxStore';
-import { ThunkAction } from 'redux-thunk';
+import { BaseThunkType, InferActionsType } from '../reduxStore';
 
 const ADD_POST = 'profile/ADD_POST' as const;
 const SET_USER_PROFILE = 'profile/SET_USER_PROFILE' as const;
@@ -12,7 +11,7 @@ const SET_PHOTO = 'profile/SET_PHOTO' as const;
 
 type InitialType = typeof initialState;
 type ActionsType = InferActionsType<typeof actions>;
-type ThunkType = ThunkAction<void, StateType, unknown, ActionsType>;
+type ThunkType = BaseThunkType<ActionsType>;
 
 const initialState = {
     posts: [
