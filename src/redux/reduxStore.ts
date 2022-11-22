@@ -33,9 +33,8 @@ export type BaseThunkType<A extends Action, R = Promise<void>> = ThunkAction<
     A
 >;
 
-type PropertiesType<T> = T extends { [key: string]: infer U } ? U : never;
-export type InferActionsType<T extends { [key: string]: (...args: any[]) => any }> = ReturnType<
-    PropertiesType<T>
->;
+export type InferActionsType<T> = T extends { [key: string]: (...args: any[]) => infer U }
+    ? U
+    : never;
 
 export default store;
