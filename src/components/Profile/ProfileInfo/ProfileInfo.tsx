@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { ChangeEvent, FC, useState } from 'react';
 
 import user from '../../../assets/user.jpg';
 import styles from './ProfileInfo.module.css';
@@ -6,14 +6,23 @@ import Preloader from '../../common/Preloader/Preloader';
 import { ProfileStatus } from './ProfileStatus/ProfileStatus';
 import { ProfileDataForm } from './ProfileDataForm/ProfileDataForm';
 import { ProfileData } from './ProfileData/ProfileData';
+import { ProfileType } from '../../../type';
 
-const ProfileInfo = ({ profile, status, updateStatus, owner, saveAvatar }) => {
+interface PropsType {
+    profile: ProfileType;
+    status: string;
+    updateStatus: (statusText: string) => void;
+    owner: boolean;
+    saveAvatar: (file: File) => void;
+}
+
+const ProfileInfo: FC<PropsType> = ({ profile, status, updateStatus, owner, saveAvatar }) => {
     if (!profile) {
         return <Preloader />;
     }
 
-    const onAvatarSelected = (e) => {
-        if (e.target.files.length) {
+    const onAvatarSelected = (e: ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files?.length) {
             saveAvatar(e.target.files[0]);
         }
     };
@@ -33,7 +42,7 @@ const ProfileInfo = ({ profile, status, updateStatus, owner, saveAvatar }) => {
             <div className={styles.container}>
                 <div className={styles.profileInformation}>
                     {profile.fullName}
-                    <img src={profile.photos.large || user} alt='Profile' />
+                    <img src={profile.photos?.large || user} alt='Profile' />
                     {owner && <input type='file' onChange={(e) => onAvatarSelected(e)} />}
                 </div>
                 {editMode ? (
