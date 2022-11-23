@@ -17,23 +17,24 @@ interface PropsType {
 }
 
 const ProfileInfo: FC<PropsType> = ({ profile, status, updateStatus, owner, saveAvatar }) => {
-    if (!profile) {
+    if (typeof profile === 'undefined') {
         return <Preloader />;
     }
 
-    const onAvatarSelected = (e: ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files?.length) {
+    const onAvatarSelected = (e: ChangeEvent<HTMLInputElement>): void => {
+        // TODO: починить @typescript-eslint/strict-boolean-expressions
+        if (e.target.files.length) {
             saveAvatar(e.target.files[0]);
         }
     };
 
     const [editMode, setEditMode] = useState(false);
 
-    const activeEditMode = () => {
+    const activeEditMode = (): void => {
         setEditMode(true);
     };
 
-    const deactivateEditMode = () => {
+    const deactivateEditMode = (): void => {
         setEditMode(false);
     };
 
@@ -42,7 +43,7 @@ const ProfileInfo: FC<PropsType> = ({ profile, status, updateStatus, owner, save
             <div className={styles.container}>
                 <div className={styles.profileInformation}>
                     {profile.fullName}
-                    <img src={profile.photos?.large || user} alt='Profile' />
+                    <img src={profile.photos?.large ?? user} alt='Profile' />
                     {owner && <input type='file' onChange={(e) => onAvatarSelected(e)} />}
                 </div>
                 {editMode ? (
