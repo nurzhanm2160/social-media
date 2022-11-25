@@ -17,14 +17,13 @@ interface PropsType {
 }
 
 const ProfileInfo: FC<PropsType> = ({ profile, status, updateStatus, owner, saveAvatar }) => {
-    if (typeof profile === 'undefined') {
+    if (profile === null) {
         return <Preloader />;
     }
 
     const onAvatarSelected = (e: ChangeEvent<HTMLInputElement>): void => {
-        // TODO: починить @typescript-eslint/strict-boolean-expressions
-        if (e.target.files.length) {
-            saveAvatar(e.target.files[0]);
+        if (e.target.files!.length) {
+            saveAvatar(e.target.files![0]);
         }
     };
 
