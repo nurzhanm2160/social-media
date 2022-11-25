@@ -1,8 +1,14 @@
-import React from 'react';
+import React, { FC } from 'react';
 import styles from '../ProfileInfo.module.css';
 import { Contact } from '../Contact/Contact';
+import { ContactsType, ProfileType } from '../../../../type';
 
-export const ProfileData = ({ profile, activeEditMode }) => {
+interface PropsType {
+    profile: ProfileType;
+    activeEditMode: () => void;
+}
+
+export const ProfileData: FC<PropsType> = ({ profile, activeEditMode }) => {
     return (
         <div className={styles.profileDescription}>
             <div className={styles.contacts}>
@@ -31,7 +37,7 @@ export const ProfileData = ({ profile, activeEditMode }) => {
                                 <Contact
                                     key={contact}
                                     contactTitle={contact}
-                                    contactValue={profile.contacts[contact]}
+                                    contactValue={profile.contacts[contact as keyof ContactsType]}
                                 />
                             );
                         })}

@@ -34,8 +34,7 @@ class ProfileInfoContainer extends React.Component<PropsType> {
     }
 
     refreshProfile(): void {
-        // TODO: починить @typescript-eslint/strict-boolean-expressions
-        if (!this.props.router.params.userId) {
+        if (this.props.router.params.userId === undefined) {
             this.props.getProfileThunkCreator(this.props.userId);
             this.props.getStatusThunkCreator(this.props.userId);
         } else {

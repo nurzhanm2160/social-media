@@ -22,8 +22,9 @@ const ProfileInfo: FC<PropsType> = ({ profile, status, updateStatus, owner, save
     }
 
     const onAvatarSelected = (e: ChangeEvent<HTMLInputElement>): void => {
-        if (e.target.files!.length) {
-            saveAvatar(e.target.files![0]);
+        if (e.target.files?.length !== 0 ?? false) {
+            // TODO: Пофиксить
+            saveAvatar(e.target.files?.[0] ?? (null as unknown as File));
         }
     };
 
