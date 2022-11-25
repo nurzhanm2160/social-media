@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import LinkWithIcon from '../LinkWithIcon/LinkWithIcon';
 
 import style from './Navbar.module.css';
@@ -9,7 +9,7 @@ import { ImNewspaper } from 'react-icons/im';
 import { BsMusicPlayerFill } from 'react-icons/bs';
 import { FiSettings, FiUsers } from 'react-icons/fi';
 
-const Navbar = () => {
+const Navbar: FC = () => {
     return (
         <nav className={style.nav}>
             <div className={style.items}>
