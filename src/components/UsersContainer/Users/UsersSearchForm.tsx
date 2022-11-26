@@ -8,7 +8,7 @@ interface PropsType {
 
 interface UsersSeacrhFormValidateObjectType {
     term: string;
-    isFriend: boolean;
+    isFriend: null | boolean;
 }
 
 const usersSeacrhFormValidate: $fixMe = (values: UsersSeacrhFormValidateObjectType) => {
@@ -22,6 +22,7 @@ const UsersSearchForm: FC<PropsType> = ({ getFilteredUsers }) => {
         { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void },
     ) => {
         const { term, isFriend } = values;
+        console.log('isFriend', isFriend);
         getFilteredUsers(term, isFriend);
         // setTimeout(() => {
         //     alert(JSON.stringify(values));
@@ -39,6 +40,11 @@ const UsersSearchForm: FC<PropsType> = ({ getFilteredUsers }) => {
             {({ isSubmitting }) => (
                 <Form>
                     <Field type='text' name='term' />
+                    <Field as='select' name='isFriend'>
+                        <option value='null'>Without filter</option>
+                        <option value='true'>Only friends</option>
+                        <option value='false'>Only non-friends</option>
+                    </Field>
                     <button type='submit' disabled={isSubmitting}>
                         Find
                     </button>

@@ -3,13 +3,9 @@ import { GetUsersType } from '../type';
 
 export const usersApi = {
     getUsers(page = 1, count = 10, term: string = '', isFriend: boolean | null = null) {
-        let query;
+        let query = `users?page=${page}&count=${count}&term=${term}`;
         if (isFriend !== null) {
-            query = `users?page=${page}&count=${count}&term=${term}&friend=${
-                isFriend ? 'true' : 'false'
-            }`;
-        } else {
-            query = `users?page=${page}&count=${count}&term=${term}`;
+            query += `&friend=${isFriend}`;
         }
         return instance.get<GetUsersType>(query).then((res) => res.data);
     },
