@@ -89,11 +89,16 @@ export const actions = {
 
 type ActionType = InferActionsType<typeof actions>;
 
-export const getUsersThunkCreator = (page: number, count: number): ThunkType => {
+export const getUsersThunkCreator = (
+    page: number,
+    count: number,
+    term: string,
+    isFriend: boolean | null,
+): ThunkType => {
     return async (dispatch) => {
         dispatch(actions.toggleIsFetching(true));
 
-        const response = await usersApi.getUsers(page, count);
+        const response = await usersApi.getUsers(page, count, term, isFriend);
 
         dispatch(actions.toggleIsFetching(false));
         const { items } = await response;

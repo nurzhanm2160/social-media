@@ -32,7 +32,12 @@ interface MapDispatchPropsType {
     setCurrentPage: (page: number) => void;
     setUserId: (userId: number) => void;
 
-    getUsersThunkCreator: (page: number, count: number) => void;
+    getUsersThunkCreator: (
+        page: number,
+        count: number,
+        term: string,
+        isFriend: boolean | null,
+    ) => void;
     getUsersTotalCountThunkCreator: () => void;
     followSuccessThunkCreator: (userId: number) => void;
     unfollowSuccessThunkCreator: (userId: number) => void;
@@ -43,19 +48,23 @@ type PropsType = MapStatePropsType & MapDispatchPropsType;
 class UsersContainer extends React.Component<PropsType> {
     componentDidMount(): void {
         if (this.props.users.length === 0) {
-            this.props.getUsersThunkCreator(this.props.page, this.props.count);
+            this.props.getUsersThunkCreator(this.props.page, this.props.count, '', null);
             this.props.getUsersTotalCountThunkCreator();
         }
     }
 
     componentDidUpdate(prevProps: PropsType): void {
         if (prevProps.page !== this.props.page) {
-            this.props.getUsersThunkCreator(this.props.page, this.props.count);
+            this.props.getUsersThunkCreator(this.props.page, this.props.count, '', null);
         }
     }
 
     onUserClicked = (userId: number): void => {
         this.props.setUserId(userId);
+    };
+
+    getFilteredUsers = (term: string, isFriend: boolean | null): void => {
+        this.props.getUsersThunkCreator(this.props.page, this.props.count, term, isFriend);
     };
 
     render(): JSX.Element {
@@ -71,6 +80,7 @@ class UsersContainer extends React.Component<PropsType> {
                     follow={this.props.followSuccessThunkCreator}
                     unfollow={this.props.unfollowSuccessThunkCreator}
                     onUserClicked={this.onUserClicked}
+                    getFilteredUsers={this.getFilteredUsers}
                 />
             </>
         );

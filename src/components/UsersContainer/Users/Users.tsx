@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import { NavLink } from 'react-router-dom';
 import Paginator from '../../common/Paginator/Paginator';
 import { UserType } from '../../../type';
+import UsersSearchForm from './UsersSearchForm';
 
 interface UsersPropsType {
     users: UserType[];
@@ -12,6 +13,7 @@ interface UsersPropsType {
     follow: (userId: number) => void;
     unfollow: (userId: number) => void;
     onUserClicked: (userId: number) => void;
+    getFilteredUsers: (term: string, isFriend: boolean | null) => void;
 }
 
 const Users: FC<UsersPropsType> = ({
@@ -23,9 +25,11 @@ const Users: FC<UsersPropsType> = ({
     follow,
     unfollow,
     onUserClicked,
+    getFilteredUsers,
 }) => {
     return (
         <div>
+            <UsersSearchForm getFilteredUsers={getFilteredUsers} />
             <Paginator
                 totalCount={totalCount}
                 count={count}
