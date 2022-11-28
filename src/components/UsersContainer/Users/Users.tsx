@@ -1,32 +1,53 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import Paginator from '../../common/Paginator/Paginator';
-import { UserType } from '../../../type';
 import UsersSearchForm from './UsersSearchForm';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+    getCountSelector,
+    getPageSelector,
+    getTotalCountSelector,
+    getUsersSelector,
+} from '../../../redux/reducers/usersSelectors';
+import {
+    actions,
+    followSuccessThunkCreator,
+    getUsersThunkCreator,
+    unfollowSuccessThunkCreator,
+} from '../../../redux/reducers/usersReducer';
+import { $fixMe } from '../../../type';
 
-interface UsersPropsType {
-    users: UserType[];
-    page: number;
-    totalCount: number;
-    count: number;
-    setCurrentPage: (currentPage: number) => void;
-    follow: (userId: number) => void;
-    unfollow: (userId: number) => void;
-    onUserClicked: (userId: number) => void;
-    getFilteredUsers: (term: string, isFriend: boolean | null) => void;
-}
+export const Users: FC = () => {
+    useEffect(() => {
+        dispatch(getUsersThunkCreator(page, count, '', null));
+    }, []);
 
-const Users: FC<UsersPropsType> = ({
-    users,
-    page,
-    totalCount,
-    count,
-    setCurrentPage,
-    follow,
-    unfollow,
-    onUserClicked,
-    getFilteredUsers,
-}) => {
+    const dispatch = useDispatch<$fixMe>();
+    const users = useSelector(getUsersSelector);
+    const page = useSelector(getPageSelector);
+    const totalCount = useSelector(getTotalCountSelector);
+    const count = useSelector(getCountSelector);
+
+    const setCurrentPage = (currentPage: number): void => {
+        dispatch(actions.setCurrentPage(currentPage));
+    };
+
+    const onUserClicked = (userId: number): void => {
+        dispatch(actions.setUserId(userId));
+    };
+
+    const follow = (userId: number): void => {
+        dispatch(followSuccessThunkCreator(userId));
+    };
+
+    const unfollow = (userId: number): void => {
+        dispatch(unfollowSuccessThunkCreator(userId));
+    };
+
+    const getFilteredUsers = (term: string, isFriend: boolean | null): void => {
+        dispatch(getUsersThunkCreator(page, count, term, isFriend));
+    };
+
     return (
         <div>
             <UsersSearchForm getFilteredUsers={getFilteredUsers} />
@@ -74,5 +95,3 @@ const Users: FC<UsersPropsType> = ({
         </div>
     );
 };
-
-export default Users;
