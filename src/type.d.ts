@@ -45,3 +45,8 @@ export interface GetUsersType {
     totalCount: number;
     error: string | null;
 }
+
+export interface UsersFilterType {
+    term: string;
+    isFriend: boolean | null;
+}

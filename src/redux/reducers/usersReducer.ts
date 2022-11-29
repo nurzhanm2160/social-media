@@ -1,6 +1,6 @@
 import { usersApi } from '../../api/usersApi';
 import { updateObjectInArray } from '../../utils/objectHelpers';
-import { $fixMe, UserType } from '../../type';
+import { $fixMe, UsersFilterType, UserType } from '../../type';
 import { BaseThunkType, InferActionsType } from '../reduxStore';
 
 const SET_USERS = 'users/SET_USERS' as const;
@@ -10,6 +10,7 @@ const SET_CURRENT_PAGE = 'users/SET_CURRENT_PAGE' as const;
 const SET_TOTAL_COUNT = 'users/SET_TOTAL_COUNT' as const;
 const TOGGLE_IS_FETCHING = 'users/TOGGLE_IS_FETCHING' as const;
 const SET_USER_ID = 'users/SET_USER_ID' as const;
+const SET_FILTER = 'users/SET_FILTER' as const;
 
 type InitialState = typeof initialState;
 type ThunkType = BaseThunkType<ActionType>;
@@ -18,8 +19,10 @@ const initialState = {
     users: [] as UserType[],
     count: 10,
     page: 1,
-    term: '',
-    friend: true,
+    filter: {
+        term: '',
+        isFriend: null,
+    } as UsersFilterType,
     totalCount: 0,
     isFetching: false,
     userId: 17352,
@@ -59,6 +62,11 @@ export const usersReducer = (state = initialState, action: ActionType): InitialS
                 ...state,
                 userId: action.userId,
             };
+        case 'users/SET_FILTER':
+            return {
+                ...state,
+                filter: action.filter,
+            };
         default:
             return state;
     }
@@ -85,6 +93,7 @@ export const actions = {
             isFetching,
         } as const),
     setUserId: (userId: number) => ({ type: SET_USER_ID, userId }),
+    setFilter: (filter: UsersFilterType) => ({ type: SET_FILTER, filter }),
 };
 
 type ActionType = InferActionsType<typeof actions>;

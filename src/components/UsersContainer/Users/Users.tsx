@@ -1,5 +1,5 @@
 import React, { FC, useEffect } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useSearchParams } from 'react-router-dom';
 import Paginator from '../../common/Paginator/Paginator';
 import UsersSearchForm from './UsersSearchForm';
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,20 +13,46 @@ import {
     actions,
     followSuccessThunkCreator,
     getUsersThunkCreator,
+    getUsersTotalCountThunkCreator,
     unfollowSuccessThunkCreator,
 } from '../../../redux/reducers/usersReducer';
 import { $fixMe } from '../../../type';
+import { StateType } from '../../../redux/reduxStore';
 
 export const Users: FC = () => {
-    useEffect(() => {
-        dispatch(getUsersThunkCreator(page, count, '', null));
-    }, []);
-
     const dispatch = useDispatch<$fixMe>();
+    // const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+
     const users = useSelector(getUsersSelector);
     const page = useSelector(getPageSelector);
     const totalCount = useSelector(getTotalCountSelector);
     const count = useSelector(getCountSelector);
+    const filter = useSelector((state: StateType) => state.usersPage.filter);
+
+    // useEffect(() => {
+    //     navigate(`?term=${filter.term}&friend=${filter.isFriend}&page=${page}`);
+    // }, [filter, page]);
+
+    useEffect(() => {
+        const termQuery = searchParams.get('term');
+        const friendQuery = searchParams.get('friend');
+        const pageQuery = searchParams.get('page');
+
+        let actualPage = page;
+        let actualFilter = filter;
+
+        if (pageQuery !== null) actualPage = Number(pageQuery);
+        if (termQuery !== null) actualFilter = { ...actualFilter, term: termQuery };
+        if (friendQuery !== null)
+            actualFilter = {
+                ...actualFilter,
+                isFriend: friendQuery === 'null' ? null : friendQuery === 'true',
+            };
+
+        dispatch(getUsersThunkCreator(actualPage, count, actualFilter.term, actualFilter.isFriend));
+        dispatch(getUsersTotalCountThunkCreator());
+    }, []);
 
     const setCurrentPage = (currentPage: number): void => {
         dispatch(actions.setCurrentPage(currentPage));
