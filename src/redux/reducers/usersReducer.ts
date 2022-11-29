@@ -112,6 +112,8 @@ export const getUsersThunkCreator = (
         dispatch(actions.toggleIsFetching(false));
         const { items } = await response;
         dispatch(actions.setUsers(items));
+
+        dispatch(actions.setFilter({ term, isFriend }));
     };
 };
 

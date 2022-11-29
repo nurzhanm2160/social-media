@@ -1,8 +1,9 @@
 import React, { FC } from 'react';
 import { Field, Form, Formik } from 'formik';
 import { $fixMe } from '../../../type';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { actions } from '../../../redux/reducers/usersReducer';
+import { StateType } from '../../../redux/reduxStore';
 
 interface PropsType {
     getFilteredUsers: (term: string, isFriend: boolean | null) => void;
@@ -21,6 +22,8 @@ const usersSeacrhFormValidate: $fixMe = (values: UsersSeacrhFormValidateObjectTy
 const UsersSearchForm: FC<PropsType> = ({ getFilteredUsers }) => {
     const dispatch = useDispatch();
 
+    const filter = useSelector((state: StateType) => state.usersPage.filter);
+
     const submit: $fixMe = (
         values: UsersSeacrhFormValidateObjectType,
         { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void },
@@ -28,16 +31,13 @@ const UsersSearchForm: FC<PropsType> = ({ getFilteredUsers }) => {
         const { term, isFriend } = values;
         dispatch(actions.setFilter({ term, isFriend }));
         getFilteredUsers(term, isFriend);
-        // setTimeout(() => {
-        //     alert(JSON.stringify(values));
-        //     setSubmitting(false);
-        // }, 400);
         setSubmitting(false);
     };
 
     return (
         <Formik
-            initialValues={{ term: '', isFriend: null }}
+            enableReinitialize
+            initialValues={{ term: filter.term, isFriend: String(filter.isFriend) }}
             validate={usersSeacrhFormValidate}
             onSubmit={submit}
         >

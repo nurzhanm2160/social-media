@@ -1,5 +1,5 @@
 import React, { FC, useEffect } from 'react';
-import { NavLink, useSearchParams } from 'react-router-dom';
+import { NavLink, useNavigate, useSearchParams } from 'react-router-dom';
 import Paginator from '../../common/Paginator/Paginator';
 import UsersSearchForm from './UsersSearchForm';
 import { useDispatch, useSelector } from 'react-redux';
@@ -21,7 +21,7 @@ import { StateType } from '../../../redux/reduxStore';
 
 export const Users: FC = () => {
     const dispatch = useDispatch<$fixMe>();
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
     const [searchParams] = useSearchParams();
 
     const users = useSelector(getUsersSelector);
@@ -29,10 +29,6 @@ export const Users: FC = () => {
     const totalCount = useSelector(getTotalCountSelector);
     const count = useSelector(getCountSelector);
     const filter = useSelector((state: StateType) => state.usersPage.filter);
-
-    // useEffect(() => {
-    //     navigate(`?term=${filter.term}&friend=${filter.isFriend}&page=${page}`);
-    // }, [filter, page]);
 
     useEffect(() => {
         const termQuery = searchParams.get('term');
@@ -51,8 +47,13 @@ export const Users: FC = () => {
             };
 
         dispatch(getUsersThunkCreator(actualPage, count, actualFilter.term, actualFilter.isFriend));
+        dispatch(actions.setCurrentPage(actualPage));
         dispatch(getUsersTotalCountThunkCreator());
     }, []);
+
+    useEffect(() => {
+        navigate(`?term=${filter.term}&friend=${filter.isFriend}&page=${page}`);
+    }, [filter, page]);
 
     const setCurrentPage = (currentPage: number): void => {
         dispatch(actions.setCurrentPage(currentPage));

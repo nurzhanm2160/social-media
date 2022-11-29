@@ -10,9 +10,6 @@ interface PaginatorProps {
 }
 
 const Paginator: FC<PaginatorProps> = ({ totalCount, count, page, setCurrentPage }) => {
-    console.log('totalCount', totalCount);
-    console.log('count', count);
-    console.log('page', page);
     const pagesCount = Math.ceil(totalCount / count);
 
     const pages = [];
