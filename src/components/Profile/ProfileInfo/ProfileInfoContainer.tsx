@@ -2,14 +2,14 @@ import React from 'react';
 import { connect } from 'react-redux';
 import ProfileInfo from './ProfileInfo';
 import {
-    getProfileThunkCreator,
-    getStatusThunkCreator,
-    saveAvatarThunkCreator,
-    updateStatusThunkCreator,
+    profileSlice,
+    getProfile,
+    getStatus,
+    saveAvatar,
+    updateStatus,
 } from '../../../redux/reducers/profileReducer';
 import withRouter from '../../hocs/withRouter';
 import { $fixMe, ProfileType } from '../../../type';
-import { StateType } from '../../../redux/reduxStore';
 
 interface PropsType {
     router: $fixMe;
@@ -27,7 +27,7 @@ class ProfileInfoContainer extends React.Component<PropsType> {
         this.refreshProfile();
     }
 
-    componentDidUpdate(prevProps: PropsType, prevState: StateType): void {
+    componentDidUpdate(prevProps: PropsType, prevState: $fixMe): void {
         if (this.props.router.params.userId !== prevProps.router.params.userId) {
             this.refreshProfile();
         }
@@ -56,7 +56,7 @@ class ProfileInfoContainer extends React.Component<PropsType> {
     }
 }
 
-const mapStateToProps = (state: StateType): $fixMe => {
+const mapStateToProps = (state: $fixMe): $fixMe => {
     return {
         profile: state.profilePage.profile,
         userId: state.usersPage.userId,
@@ -65,8 +65,8 @@ const mapStateToProps = (state: StateType): $fixMe => {
 };
 
 export default connect(mapStateToProps, {
-    getProfileThunkCreator,
-    getStatusThunkCreator,
-    updateStatusThunkCreator,
-    saveAvatarThunkCreator,
+    getProfile,
+    getStatus,
+    updateStatus,
+    saveAvatar,
 })(withRouter(ProfileInfoContainer));

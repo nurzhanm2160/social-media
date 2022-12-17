@@ -2,8 +2,7 @@ import React, { FC } from 'react';
 import { Field, Form, Formik } from 'formik';
 import { $fixMe } from '../../../type';
 import { useDispatch, useSelector } from 'react-redux';
-import { actions } from '../../../redux/reducers/usersReducer';
-import { StateType } from '../../../redux/reduxStore';
+import { usersSlice } from '../../../redux/reducers/usersReducer';
 
 interface PropsType {
     getFilteredUsers: (term: string, isFriend: boolean | null) => void;
@@ -22,14 +21,14 @@ const usersSeacrhFormValidate: $fixMe = (values: UsersSeacrhFormValidateObjectTy
 const UsersSearchForm: FC<PropsType> = ({ getFilteredUsers }) => {
     const dispatch = useDispatch();
 
-    const filter = useSelector((state: StateType) => state.usersPage.filter);
+    const filter = useSelector((state: $fixMe) => state.usersPage.filter);
 
     const submit: $fixMe = (
         values: UsersSeacrhFormValidateObjectType,
         { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void },
     ) => {
         const { term, isFriend } = values;
-        dispatch(actions.setFilter({ term, isFriend }));
+        dispatch(usersSlice.actions.setFilter({ term, isFriend }));
         getFilteredUsers(term, isFriend);
         setSubmitting(false);
     };

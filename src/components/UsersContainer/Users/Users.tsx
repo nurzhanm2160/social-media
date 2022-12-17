@@ -10,14 +10,13 @@ import {
     getUsersSelector,
 } from '../../../redux/reducers/usersSelectors';
 import {
-    actions,
-    followSuccessThunkCreator,
-    getUsersThunkCreator,
-    getUsersTotalCountThunkCreator,
-    unfollowSuccessThunkCreator,
+    usersSlice,
+    followSuccess,
+    getUsers,
+    getUsersTotalCount,
+    unfollowSuccess,
 } from '../../../redux/reducers/usersReducer';
 import { $fixMe } from '../../../type';
-import { StateType } from '../../../redux/reduxStore';
 
 export const Users: FC = () => {
     const dispatch = useDispatch<$fixMe>();
@@ -28,7 +27,7 @@ export const Users: FC = () => {
     const page = useSelector(getPageSelector);
     const totalCount = useSelector(getTotalCountSelector);
     const count = useSelector(getCountSelector);
-    const filter = useSelector((state: StateType) => state.usersPage.filter);
+    const filter = useSelector((state: $fixMe) => state.usersPage.filter);
 
     useEffect(() => {
         const termQuery = searchParams.get('term');
@@ -46,9 +45,16 @@ export const Users: FC = () => {
                 isFriend: friendQuery === 'null' ? null : friendQuery === 'true',
             };
 
-        dispatch(getUsersThunkCreator(actualPage, count, actualFilter.term, actualFilter.isFriend));
-        dispatch(actions.setCurrentPage(actualPage));
-        dispatch(getUsersTotalCountThunkCreator());
+        dispatch(
+            getUsers({
+                page: actualPage,
+                count,
+                term: actualFilter.term,
+                isFriend: actualFilter.isFriend,
+            }),
+        );
+        dispatch(usersSlice.actions.setCurrentPage(actualPage));
+        dispatch(getUsersTotalCount);
     }, []);
 
     useEffect(() => {
@@ -56,23 +62,23 @@ export const Users: FC = () => {
     }, [filter, page]);
 
     const setCurrentPage = (currentPage: number): void => {
-        dispatch(actions.setCurrentPage(currentPage));
+        dispatch(usersSlice.actions.setCurrentPage(currentPage));
     };
 
     const onUserClicked = (userId: number): void => {
-        dispatch(actions.setUserId(userId));
+        dispatch(usersSlice.actions.setUserId(userId));
     };
 
     const follow = (userId: number): void => {
-        dispatch(followSuccessThunkCreator(userId));
+        dispatch(followSuccess({ userId }));
     };
 
     const unfollow = (userId: number): void => {
-        dispatch(unfollowSuccessThunkCreator(userId));
+        dispatch(unfollowSuccess({ userId }));
     };
 
     const getFilteredUsers = (term: string, isFriend: boolean | null): void => {
-        dispatch(getUsersThunkCreator(page, count, term, isFriend));
+        dispatch(getUsers({ page, count, term, isFriend }));
     };
 
     return (

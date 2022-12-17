@@ -20,5 +20,7 @@ module.exports = {
         '@typescript-eslint/no-misused-promises': 0,
         '@typescript-eslint/restrict-template-expressions': 0,
         '@typescript-eslint/no-floating-promises': 0,
+        '@typescript-eslint/no-unused-vars': 1,
+        '@typescript-eslint/strict-boolean-expressions': 0,
     },
 };

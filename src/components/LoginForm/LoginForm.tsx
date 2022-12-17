@@ -2,11 +2,13 @@ import React, { FC } from 'react';
 import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../redux/reducers/authReducer';
-import { StateType } from '../../redux/reduxStore';
+import { $fixMe } from '../../type';
+import { ThunkDispatch } from 'redux-thunk';
+import { AnyAction } from 'redux';
 
 const LoginForm: FC = () => {
-    const dispatch = useDispatch();
-    const captchaUrl = useSelector((state: StateType) => state.auth.captchaUrl);
+    const dispatch: ThunkDispatch<{}, {}, AnyAction> = useDispatch();
+    const captchaUrl = useSelector((state: $fixMe) => state.auth.captchaUrl);
 
     const formik = useFormik({
         initialValues: {
@@ -18,7 +20,7 @@ const LoginForm: FC = () => {
         validate: (values) => {},
         onSubmit: (values) => {
             const { email, password, rememberMe, captcha } = values;
-            dispatch(login(email, password, rememberMe, captcha));
+            dispatch(login({ email, password, rememberMe, captcha }));
         },
     });
 

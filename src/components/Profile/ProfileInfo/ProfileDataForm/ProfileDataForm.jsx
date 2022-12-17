@@ -1,11 +1,13 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
-import { updateProfileThunkCreator } from '../../../../redux/reducers/profileReducer';
+import { updateProfile } from '../../../../redux/reducers/profileReducer';
 import styles from '../ProfileInfo.module.css';
+import { ThunkDispatch } from 'redux-thunk';
+import { AnyAction } from 'redux';
 
 export const ProfileDataForm = ({ profile, deactivateEditMode }) => {
-    const dispatch = useDispatch();
+    const dispatch: ThunkDispatch<{}, {}, AnyAction> = useDispatch();
     const formik = useFormik({
         initialValues: {
             fullName: profile.fullName,
@@ -52,7 +54,7 @@ export const ProfileDataForm = ({ profile, deactivateEditMode }) => {
                 youtube,
                 mainLink,
             };
-            dispatch(updateProfileThunkCreator(newProfile));
+            dispatch(updateProfile({ newProfile }));
             deactivateEditMode();
         },
     });

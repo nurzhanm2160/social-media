@@ -1,20 +1,20 @@
 import React from 'react';
 import Header from './Header';
 import { connect } from 'react-redux';
-import { authMeThunkCreator, logoutThunkCreator } from '../../redux/reducers/authReducer';
-import { StateType } from '../../redux/reduxStore';
+import { authMe, logout } from '../../redux/reducers/authReducer';
+// import { StateType } from '../../redux/reduxStore';
 import { $fixMe } from '../../type';
 
 interface PropsType {
-    authMeThunkCreator: () => void;
+    authMe: () => void;
     isAuth: boolean;
     login: string | null;
-    logoutThunkCreator: () => void;
+    logout: () => void;
 }
 
 class HeaderContainer extends React.Component<PropsType> {
     componentDidMount(): void {
-        this.props.authMeThunkCreator();
+        this.props.authMe();
     }
 
     render(): JSX.Element {
@@ -22,13 +22,13 @@ class HeaderContainer extends React.Component<PropsType> {
             <Header
                 isAuth={this.props.isAuth}
                 login={this.props.login}
-                logout={this.props.logoutThunkCreator}
+                logout={this.props.logout()}
             />
         );
     }
 }
 
-const mapStateToProps = (state: StateType): $fixMe => {
+const mapStateToProps = (state: $fixMe): $fixMe => {
     return {
         isAuth: state.auth.isAuth,
         login: state.auth.login,
@@ -41,11 +41,11 @@ interface MapStatePropsType {
 }
 
 interface MapDispatchPropsType {
-    authMeThunkCreator: () => void;
-    logoutThunkCreator: () => void;
+    authMe: () => void;
+    logout: () => void;
 }
 
-export default connect<MapStatePropsType, MapDispatchPropsType, {}, StateType>(mapStateToProps, {
-    authMeThunkCreator,
-    logoutThunkCreator,
+export default connect<MapStatePropsType, MapDispatchPropsType, {}, $fixMe>(mapStateToProps, {
+    authMe,
+    logout,
 })(HeaderContainer);
